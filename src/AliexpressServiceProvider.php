@@ -24,7 +24,6 @@ class AliexpressServiceProvider extends BasePackageServiceProvider
      *
      * @return void
      */
-
     public function bootPackage()
     {
         // Load view
@@ -64,8 +63,10 @@ class AliexpressServiceProvider extends BasePackageServiceProvider
             $loader->alias('ImportSKU', 'Corals\\Modules\\' . $namespace . '\\Models\\SKU');
             $loader->alias('ImportTag', 'Corals\\Modules\\' . $namespace . '\\Models\\Tag');
             $loader->alias('ImportProductService', 'Corals\\Modules\\' . $namespace . '\\Services\\ProductService');
-            $loader->alias('ImportProductRequest',
-                'Corals\\Modules\\' . $namespace . '\\Http\\Requests\\ProductRequest');
+            $loader->alias(
+                'ImportProductRequest',
+                'Corals\\Modules\\' . $namespace . '\\Http\\Requests\\ProductRequest'
+            );
         });
     }
 

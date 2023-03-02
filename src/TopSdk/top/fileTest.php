@@ -1,8 +1,9 @@
 <?php
-    include "TopSdk.php";
-    date_default_timezone_set('Asia/Shanghai'); 
 
-    $c = new TopClient;
+    include "TopSdk.php";
+    date_default_timezone_set('Asia/Shanghai');
+
+    $c = new TopClient();
     $c->appkey = '***********';
     $c->secretKey = '*************************';
     // $req = new TradeVoucherUploadRequest;
@@ -12,15 +13,14 @@
     // $req->setBuyerNick("101NufynDYcbjf2cFQD123j8M/mjtyz6RoxQ2OL1c0e/Bcasdfasdasdfasdfas");
     // var_dump($c->execute($req));
 
-    $req2 = new TradeVoucherUploadRequest;
+    $req2 = new TradeVoucherUploadRequest();
     $req2->setFileName("example");
 
-    $myPic = array(
+    $myPic = [
             'type' => 'application/octet-stream',
-            'content' => file_get_contents('/Users/xt/Downloads/1.jpg')
-            );
+            'content' => file_get_contents('/Users/xt/Downloads/1.jpg'),
+            ];
     $req2->setFileData($myPic);
     $req2->setSellerNick("奥利奥官方旗舰店");
     $req2->setBuyerNick("101NufynDYcbjf2cFQD123j8M/mjtyz6RoxQ2OL1c0e/Bcasdfasdasdfasdfas");
     var_dump($c->execute($req2));
-?>

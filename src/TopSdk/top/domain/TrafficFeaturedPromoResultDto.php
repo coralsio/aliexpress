@@ -6,15 +6,13 @@
  */
 class TrafficFeaturedPromoResultDto
 {
-	
-	/** 
-	 * 当前返回数量
-	 **/
-	public $current_record_count;
-	
-	/** 
-	 * 返回主题活动列表
-	 **/
-	public $promos;	
+    /**
+     * 当前返回数量
+     **/
+    public $current_record_count;
+
+    /**
+     * 返回主题活动列表
+     **/
+    public $promos;
 }
-?>

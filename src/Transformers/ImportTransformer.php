@@ -26,7 +26,7 @@ class ImportTransformer extends BaseTransformer
             'in_progress' => 'success',
             'completed' => 'primary',
             'failed' => 'danger',
-            'canceled' => 'warning'
+            'canceled' => 'warning',
         ];
 
         $transformedArray = [
@@ -34,15 +34,18 @@ class ImportTransformer extends BaseTransformer
             'title' => \Str::limit($import->title, 50),
             'status' => formatStatusAsLabels($import->status, [
                 'level' => $levels[$import->status],
-                'text' => trans('Aliexpress::attributes.import.status_options.' . $import->status)
+                'text' => trans('Aliexpress::attributes.import.status_options.' . $import->status),
             ]),
-            'categories' => formatArrayAsLabels($import->categories->pluck('name'), 'success',
-                '<i class="fa fa-folder-open"></i>'),
+            'categories' => formatArrayAsLabels(
+                $import->categories->pluck('name'),
+                'success',
+                '<i class="fa fa-folder-open"></i>'
+            ),
             'keywords' => formatArrayAsLabels($import->keywords, 'success', '<i class="fa fa-tag"></i>'),
             'imported_products_count' => $import->products->count(),
             'created_at' => format_date($import->created_at),
             'updated_at' => format_date($import->updated_at),
-            'action' => $this->actions($import)
+            'action' => $this->actions($import),
         ];
 
         return parent::transformResponse($transformedArray);

@@ -23,11 +23,12 @@ class AliexpressMenuDatabaseSeeder extends Seeder
             'icon' => 'fa fa-shopping-cart',
             'target' => null,
             'roles' => '["1","2"]',
-            'order' => 0
+            'order' => 0,
         ]);
 
         // seed subscriptions children menu
-        \DB::table('menus')->insert([
+        \DB::table('menus')->insert(
+            [
                 [
                     'parent_id' => $aliexpress_menu_id,
                     'key' => null,
@@ -38,12 +39,13 @@ class AliexpressMenuDatabaseSeeder extends Seeder
                     'icon' => 'fa fa-upload',
                     'target' => null,
                     'roles' => '["1"]',
-                    'order' => 0
+                    'order' => 0,
                 ],
             ]
         );
         // seed users children menu
-        \DB::table('menus')->insert([
+        \DB::table('menus')->insert(
+            [
                 [
                     'parent_id' => $aliexpress_menu_id,
                     'key' => null,
@@ -54,7 +56,7 @@ class AliexpressMenuDatabaseSeeder extends Seeder
                     'icon' => 'fa fa-cog fa-fw',
                     'target' => null,
                     'roles' => '["1"]',
-                    'order' => 0
+                    'order' => 0,
                 ],
             ]
         );

@@ -10,11 +10,10 @@ use Illuminate\Database\Seeder;
 
 class AliexpressCategoriesTableSeeder extends Seeder
 {
-
-    const PRIMARY_CATEGORY = 0;
-    const PRIMARY_CATEGORY_ID = 1;
-    const SUB_CATEGORY = 2;
-    const SUB_CATEGORY_ID = 3;
+    public const PRIMARY_CATEGORY = 0;
+    public const PRIMARY_CATEGORY_ID = 1;
+    public const SUB_CATEGORY = 2;
+    public const SUB_CATEGORY_ID = 3;
 
     /**
      * Auto generated seed file
@@ -45,13 +44,13 @@ class AliexpressCategoriesTableSeeder extends Seeder
             $result = $topSdkManager->categoryGetRequest();
 
             foreach (data_get($result, 'categories.category', []) as $category) {
-                if (empty($category['parent_category_id']) && !isset($categoriesToImport[$category['category_id']])) {
+                if (empty($category['parent_category_id']) && ! isset($categoriesToImport[$category['category_id']])) {
                     $categoriesToImport[$category['category_id']] = [
                         'name' => $category['category_name'],
                         'integration_id' => $category['category_id'],
-                        'sub_categories' => []
+                        'sub_categories' => [],
                     ];
-                } elseif (!empty($category['parent_category_id'])) {
+                } elseif (! empty($category['parent_category_id'])) {
                     $categoriesToImport[$category['parent_category_id']]['sub_categories'][] = [
                         'name' => $category['category_name'],
                         'integration_id' => $category['category_id'],
@@ -72,16 +71,17 @@ class AliexpressCategoriesTableSeeder extends Seeder
                 while (($category = fgetcsv($categories)) !== false) {
                     if ($row === 0) {
                         $row++;
+
                         continue;
                     }
 
-                    if (!isset($categoriesToImport[$category[self::PRIMARY_CATEGORY_ID]])) {
+                    if (! isset($categoriesToImport[$category[self::PRIMARY_CATEGORY_ID]])) {
                         $categoriesToImport[$category[self::PRIMARY_CATEGORY_ID]] = [
                             'name' => $category[self::PRIMARY_CATEGORY],
                             'integration_id' => $category[self::PRIMARY_CATEGORY_ID],
-                            'sub_categories' => []
+                            'sub_categories' => [],
                         ];
-                    } elseif (!empty($category[self::SUB_CATEGORY])) {
+                    } elseif (! empty($category[self::SUB_CATEGORY])) {
                         $categoriesToImport[$category[self::PRIMARY_CATEGORY_ID]]['sub_categories'][] = [
                             'name' => $category[self::SUB_CATEGORY],
                             'integration_id' => $category[self::SUB_CATEGORY_ID],
@@ -97,7 +97,7 @@ class AliexpressCategoriesTableSeeder extends Seeder
 
         foreach ($categoriesToImport as $category) {
             $parentCategory = AliexpressCategory::query()->updateOrCreate([
-                'integration_id' => $category['integration_id']
+                'integration_id' => $category['integration_id'],
             ], [
                 'name' => $category['name'],
             ]);

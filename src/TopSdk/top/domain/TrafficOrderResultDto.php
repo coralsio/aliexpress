@@ -6,15 +6,13 @@
  */
 class TrafficOrderResultDto
 {
-	
-	/** 
-	 * 当前页记录条数
-	 **/
-	public $current_record_count;
-	
-	/** 
-	 * 订单内容明细
-	 **/
-	public $orders;	
+    /**
+     * 当前页记录条数
+     **/
+    public $current_record_count;
+
+    /**
+     * 订单内容明细
+     **/
+    public $orders;
 }
-?>

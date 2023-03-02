@@ -40,7 +40,7 @@ class TopClient
 
         $stringToBeSigned = $this->secretKey;
         foreach ($params as $k => $v) {
-            if (!is_array($v) && "@" != substr($v, 0, 1)) {
+            if (! is_array($v) && "@" != substr($v, 0, 1)) {
                 $stringToBeSigned .= "$k$v";
             }
         }
@@ -73,11 +73,9 @@ class TopClient
             $postBodyString = "";
             $postMultipart = false;
             foreach ($postFields as $k => $v) {
-                if ("@" != substr($v, 0, 1))//判断是不是文件上传
-                {
+                if ("@" != substr($v, 0, 1)) {//判断是不是文件上传
                     $postBodyString .= "$k=" . urlencode($v) . "&";
-                } else//文件上传用multipart/form-data，否则用www-form-urlencoded
-                {
+                } else {//文件上传用multipart/form-data，否则用www-form-urlencoded
                     $postMultipart = true;
                     if (class_exists('\CURLFile')) {
                         $postFields[$k] = new \CURLFile(substr($v, 1));
@@ -96,7 +94,7 @@ class TopClient
                 }
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
             } else {
-                $header = array("content-type: application/x-www-form-urlencoded; charset=UTF-8");
+                $header = ["content-type: application/x-www-form-urlencoded; charset=UTF-8"];
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, substr($postBodyString, 0, -1));
             }
@@ -112,6 +110,7 @@ class TopClient
             }
         }
         curl_close($ch);
+
         return $reponse;
     }
 
@@ -162,10 +161,13 @@ class TopClient
         $data .= "--" . $delimiter . "--";
 
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            [
                 'Content-Type: multipart/form-data; boundary=' . $delimiter,
-                'Content-Length: ' . strlen($data)
-            )
+                'Content-Length: ' . strlen($data),
+            ]
         );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -182,17 +184,20 @@ class TopClient
             }
         }
         curl_close($ch);
+
         return $reponse;
     }
 
     protected function logCommunicationError($apiName, $requestUrl, $errorCode, $responseTxt)
     {
         $localIp = isset($_SERVER["SERVER_ADDR"]) ? $_SERVER["SERVER_ADDR"] : "CLI";
-        $logger = new TopLogger;
-        $logger->conf["log_file"] = rtrim(TOP_SDK_WORK_DIR,
-                '\\/') . '/' . "logs/top_comm_err_" . $this->appkey . "_" . date("Y-m-d") . ".log";
+        $logger = new TopLogger();
+        $logger->conf["log_file"] = rtrim(
+            TOP_SDK_WORK_DIR,
+            '\\/'
+        ) . '/' . "logs/top_comm_err_" . $this->appkey . "_" . date("Y-m-d") . ".log";
         $logger->conf["separator"] = "^_^";
-        $logData = array(
+        $logData = [
             date("Y-m-d H:i:s"),
             $apiName,
             $this->appkey,
@@ -201,8 +206,8 @@ class TopClient
             $this->sdkVersion,
             $requestUrl,
             $errorCode,
-            str_replace("\n", "", $responseTxt)
-        );
+            str_replace("\n", "", $responseTxt),
+        ];
         $logger->log($logData);
     }
 
@@ -215,6 +220,7 @@ class TopClient
             } catch (Exception $e) {
                 $result->code = $e->getCode();
                 $result->msg = $e->getMessage();
+
                 return $result;
             }
         }
@@ -228,7 +234,7 @@ class TopClient
         if (null != $session) {
             $sysParams["session"] = $session;
         }
-        $apiParams = array();
+        $apiParams = [];
         //获取业务参数
         $apiParams = $request->getApiParas();
 
@@ -249,7 +255,7 @@ class TopClient
             $requestUrl .= "$sysParamKey=" . urlencode($sysParamValue) . "&";
         }
 
-        $fileFields = array();
+        $fileFields = [];
         foreach ($apiParams as $key => $value) {
             if (is_array($value) && array_key_exists('type', $value) && array_key_exists('content', $value)) {
                 $value['name'] = $key;
@@ -269,10 +275,15 @@ class TopClient
                 $resp = $this->curl($requestUrl, $apiParams);
             }
         } catch (Exception $e) {
-            $this->logCommunicationError($sysParams["method"], $requestUrl, "HTTP_ERROR_" . $e->getCode(),
-                $e->getMessage());
+            $this->logCommunicationError(
+                $sysParams["method"],
+                $requestUrl,
+                "HTTP_ERROR_" . $e->getCode(),
+                $e->getMessage()
+            );
             $result->code = $e->getCode();
             $result->msg = $e->getMessage();
+
             return $result;
         }
 
@@ -303,37 +314,41 @@ class TopClient
             $this->logCommunicationError($sysParams["method"], $requestUrl, "HTTP_RESPONSE_NOT_WELL_FORMED", $resp);
             $result->code = 0;
             $result->msg = "HTTP_RESPONSE_NOT_WELL_FORMED";
+
             return $result;
         }
 
         //如果TOP返回了错误码，记录到业务错误日志中
         if (isset($respObject->code)) {
-            $logger = new TopLogger;
-            $logger->conf["log_file"] = rtrim(TOP_SDK_WORK_DIR,
-                    '\\/') . '/' . "logs/top_biz_err_" . $this->appkey . "_" . date("Y-m-d") . ".log";
-            $logger->log(array(
+            $logger = new TopLogger();
+            $logger->conf["log_file"] = rtrim(
+                TOP_SDK_WORK_DIR,
+                '\\/'
+            ) . '/' . "logs/top_biz_err_" . $this->appkey . "_" . date("Y-m-d") . ".log";
+            $logger->log([
                 date("Y-m-d H:i:s"),
-                $resp
-            ));
+                $resp,
+            ]);
         }
+
         return $respObject;
     }
 
     public function exec($paramsArray)
     {
-        if (!isset($paramsArray["method"])) {
+        if (! isset($paramsArray["method"])) {
             trigger_error("No api name passed");
         }
-        $inflector = new LtInflector;
+        $inflector = new LtInflector();
         $inflector->conf["separator"] = ".";
         $requestClassName = ucfirst($inflector->camelize(substr($paramsArray["method"], 7))) . "Request";
-        if (!class_exists($requestClassName)) {
+        if (! class_exists($requestClassName)) {
             trigger_error("No such api: " . $paramsArray["method"]);
         }
 
         $session = isset($paramsArray["session"]) ? $paramsArray["session"] : null;
 
-        $req = new $requestClassName;
+        $req = new $requestClassName();
         foreach ($paramsArray as $paraKey => $paraValue) {
             $inflector->conf["separator"] = "_";
             $setterMethodName = $inflector->camelize($paraKey);
@@ -343,6 +358,7 @@ class TopClient
                 $req->$setterMethodName($paraValue);
             }
         }
+
         return $this->execute($req, $session);
     }
 

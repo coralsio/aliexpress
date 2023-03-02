@@ -31,23 +31,15 @@ class ImportsDataTable extends BaseDataTable
      */
     public function query(Import $model)
     {
-
-
         if (\Modules::isModuleActive('corals-marketplace')) {
-
             if (\Store::isStoreAdmin()) {
                 return $model->newQuery();
-
             } else {
                 return user()->aliexpress_imports()->select('aliexpress_imports.*')->newQuery();
-
             }
-        }else{
+        } else {
             return $model->newQuery();
-
         }
-
-
     }
 
     /**

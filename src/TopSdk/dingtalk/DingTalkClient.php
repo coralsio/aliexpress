@@ -1,115 +1,105 @@
 <?php
+
 class DingTalkClient
 {
-	/**@Author chaohui.zch copy from TopClient and modify 2016-12-14 **/
+    /**@Author chaohui.zch copy from TopClient and modify 2016-12-14 **/
 
     /**@Author chaohui.zch modify $gatewayUrl 2017-07-18 **/
     public $gatewayUrl = "https://eco.taobao.com/router/rest";
 
-	public $format = "xml";
+    public $format = "xml";
 
-	public $connectTimeout;
+    public $connectTimeout;
 
-	public $readTimeout;
+    public $readTimeout;
 
     public $apiCallType;
 
     public $httpMethod;
 
-	/** 是否打开入参check**/
-	public $checkRequest = true;
+    /** 是否打开入参check**/
+    public $checkRequest = true;
 
-	protected $apiVersion = "2.0";
+    protected $apiVersion = "2.0";
 
-	protected $sdkVersion = "dingtalk-sdk-php-20161214";
+    protected $sdkVersion = "dingtalk-sdk-php-20161214";
 
-    public function __construct($apiCallType = null, $httpMethod = null, $format = "xml"){
+    public function __construct($apiCallType = null, $httpMethod = null, $format = "xml")
+    {
         $this->apiCallType = $apiCallType;
         $this->httpMethod = $httpMethod;
         $this->format = $format;
     }
 
-	public function curl($url, $postFields = null)
-	{
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_FAILONERROR, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		if ($this->readTimeout) {
-			curl_setopt($ch, CURLOPT_TIMEOUT, $this->readTimeout);
-		}
-		if ($this->connectTimeout) {
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
-		}
-		curl_setopt ( $ch, CURLOPT_USERAGENT, "dingtalk-sdk-php" );
-		//https 请求
-		if(strlen($url) > 5 && strtolower(substr($url,0,5)) == "https" ) {
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		}
+    public function curl($url, $postFields = null)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FAILONERROR, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        if ($this->readTimeout) {
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->readTimeout);
+        }
+        if ($this->connectTimeout) {
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
+        }
+        curl_setopt($ch, CURLOPT_USERAGENT, "dingtalk-sdk-php");
+        //https 请求
+        if (strlen($url) > 5 && strtolower(substr($url, 0, 5)) == "https") {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        }
 
-		if (is_array($postFields) && 0 < count($postFields))
-		{
-			$postBodyString = "";
-			$postMultipart = false;
-			foreach ($postFields as $k => $v)
-			{
-				if("@" != substr($v, 0, 1))//判断是不是文件上传
-				{
-					$postBodyString .= "$k=" . urlencode($v) . "&"; 
-				}
-				else//文件上传用multipart/form-data，否则用www-form-urlencoded
-				{
-					$postMultipart = true;
-					if(class_exists('\CURLFile')){
-						$postFields[$k] = new \CURLFile(substr($v, 1));
-					}
-				}
-			}
-			unset($k, $v);
-			curl_setopt($ch, CURLOPT_POST, true);
-			if ($postMultipart)
-			{
-				if (class_exists('\CURLFile')) {
-				    curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
-				} else {
-				    if (defined('CURLOPT_SAFE_UPLOAD')) {
-				        curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
-				    }
-				}
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-			}
-			else
-			{
-				$header = array("content-type: application/x-www-form-urlencoded; charset=UTF-8");
-				curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, substr($postBodyString,0,-1));
-			}
-		}
-		$reponse = curl_exec($ch);
-		
-		if (curl_errno($ch))
-		{
-			throw new Exception(curl_error($ch),0);
-		}
-		else
-		{
-			$httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if (200 !== $httpStatusCode)
-			{
-				throw new Exception($reponse,$httpStatusCode);
-			}
-		}
-		curl_close($ch);
-		return $reponse;
-	}
+        if (is_array($postFields) && 0 < count($postFields)) {
+            $postBodyString = "";
+            $postMultipart = false;
+            foreach ($postFields as $k => $v) {
+                if ("@" != substr($v, 0, 1)) {//判断是不是文件上传
+                    $postBodyString .= "$k=" . urlencode($v) . "&";
+                } else {//文件上传用multipart/form-data，否则用www-form-urlencoded
+                    $postMultipart = true;
+                    if (class_exists('\CURLFile')) {
+                        $postFields[$k] = new \CURLFile(substr($v, 1));
+                    }
+                }
+            }
+            unset($k, $v);
+            curl_setopt($ch, CURLOPT_POST, true);
+            if ($postMultipart) {
+                if (class_exists('\CURLFile')) {
+                    curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
+                } else {
+                    if (defined('CURLOPT_SAFE_UPLOAD')) {
+                        curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
+                    }
+                }
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+            } else {
+                $header = ["content-type: application/x-www-form-urlencoded; charset=UTF-8"];
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, substr($postBodyString, 0, -1));
+            }
+        }
+        $reponse = curl_exec($ch);
 
-    public function curl_get($url,$apiFields = null)
+        if (curl_errno($ch)) {
+            throw new Exception(curl_error($ch), 0);
+        } else {
+            $httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if (200 !== $httpStatusCode) {
+                throw new Exception($reponse, $httpStatusCode);
+            }
+        }
+        curl_close($ch);
+
+        return $reponse;
+    }
+
+    public function curl_get($url, $apiFields = null)
     {
         $ch = curl_init();
 
-        foreach ($apiFields as $key => $value)
-        {
+        foreach ($apiFields as $key => $value) {
             $url .= "&" ."$key=" . urlencode($value);
         }
 
@@ -120,40 +110,34 @@ class DingTalkClient
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 
 
-        if ($this->readTimeout)
-        {
+        if ($this->readTimeout) {
             curl_setopt($ch, CURLOPT_TIMEOUT, $this->readTimeout);
         }
 
-        if ($this->connectTimeout)
-        {
+        if ($this->connectTimeout) {
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
         }
 
-        curl_setopt ( $ch, CURLOPT_USERAGENT, "dingtalk-sdk-php" );
+        curl_setopt($ch, CURLOPT_USERAGENT, "dingtalk-sdk-php");
 
         //https ignore ssl check ?
-        if(strlen($url) > 5 && strtolower(substr($url,0,5)) == "https" )
-        {
+        if (strlen($url) > 5 && strtolower(substr($url, 0, 5)) == "https") {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         }
 
         $reponse = curl_exec($ch);
 
-        if (curl_errno($ch))
-        {
-            throw new Exception(curl_error($ch),0);
-        }
-        else
-        {
+        if (curl_errno($ch)) {
+            throw new Exception(curl_error($ch), 0);
+        } else {
             $httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if (200 !== $httpStatusCode)
-            {
-                throw new Exception($reponse,$httpStatusCode);
+            if (200 !== $httpStatusCode) {
+                throw new Exception($reponse, $httpStatusCode);
             }
         }
         curl_close($ch);
+
         return $reponse;
     }
 
@@ -169,38 +153,32 @@ class DingTalkClient
         if ($this->connectTimeout) {
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
         }
-        curl_setopt ( $ch, CURLOPT_USERAGENT, "dingtalk-sdk-php" );
+        curl_setopt($ch, CURLOPT_USERAGENT, "dingtalk-sdk-php");
         //https 请求
-        if(strlen($url) > 5 && strtolower(substr($url,0,5)) == "https" ) {
+        if (strlen($url) > 5 && strtolower(substr($url, 0, 5)) == "https") {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         }
 
-        if (is_array($postFields) && 0 < count($postFields))
-        {
+        if (is_array($postFields) && 0 < count($postFields)) {
             $postBodyString = "";
             $postMultipart = false;
-            foreach ($postFields as $k => $v)
-            {
-                if(!is_string($v)){
+            foreach ($postFields as $k => $v) {
+                if (! is_string($v)) {
                     $v = json_encode($v);
                 }
-                if("@" != substr($v, 0, 1))//判断是不是文件上传
-                {
+                if ("@" != substr($v, 0, 1)) {//判断是不是文件上传
                     $postBodyString .= "$k=" . urlencode($v) . "&";
-                }
-                else//文件上传用multipart/form-data，否则用www-form-urlencoded
-                {
+                } else {//文件上传用multipart/form-data，否则用www-form-urlencoded
                     $postMultipart = true;
-                    if(class_exists('\CURLFile')){
+                    if (class_exists('\CURLFile')) {
                         $postFields[$k] = new \CURLFile(substr($v, 1));
                     }
                 }
             }
             unset($k, $v);
             curl_setopt($ch, CURLOPT_POST, true);
-            if ($postMultipart)
-            {
+            if ($postMultipart) {
                 if (class_exists('\CURLFile')) {
                     curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
                 } else {
@@ -209,172 +187,173 @@ class DingTalkClient
                     }
                 }
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-            }
-            else {
-                $header = array("Content-Type: application/json; charset=utf-8", "Content-Length:".strlen(json_encode($postFields)));
-                curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
+            } else {
+                $header = ["Content-Type: application/json; charset=utf-8", "Content-Length:".strlen(json_encode($postFields))];
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postFields));
             }
         }
         $reponse = curl_exec($ch);
 
-        if (curl_errno($ch))
-        {
-            throw new Exception(curl_error($ch),0);
-        }
-        else
-        {
+        if (curl_errno($ch)) {
+            throw new Exception(curl_error($ch), 0);
+        } else {
             $httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if (200 !== $httpStatusCode)
-            {
-                throw new Exception($reponse,$httpStatusCode);
+            if (200 !== $httpStatusCode) {
+                throw new Exception($reponse, $httpStatusCode);
             }
         }
         curl_close($ch);
+
         return $reponse;
     }
 
-	public function curl_with_memory_file($url, $postFields = null, $fileFields = null)
-	{
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_FAILONERROR, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		if ($this->readTimeout) {
-			curl_setopt($ch, CURLOPT_TIMEOUT, $this->readTimeout);
-		}
-		if ($this->connectTimeout) {
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
-		}
-		curl_setopt ( $ch, CURLOPT_USERAGENT, "dingtalk-sdk-php" );
-		//https 请求
-		if(strlen($url) > 5 && strtolower(substr($url,0,5)) == "https" ) {
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		}
-		//生成分隔符
-		$delimiter = '-------------' . uniqid();
-		//先将post的普通数据生成主体字符串
-		$data = '';
-		if($postFields != null){
-			foreach ($postFields as $name => $content) {
-			    $data .= "--" . $delimiter . "\r\n";
-			    $data .= 'Content-Disposition: form-data; name="' . $name . '"';
-			    //multipart/form-data 不需要urlencode，参见 http:stackoverflow.com/questions/6603928/should-i-url-encode-post-data
-			    $data .= "\r\n\r\n" . $content . "\r\n";
-			}
-			unset($name,$content);
-		}
+    public function curl_with_memory_file($url, $postFields = null, $fileFields = null)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FAILONERROR, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        if ($this->readTimeout) {
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->readTimeout);
+        }
+        if ($this->connectTimeout) {
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
+        }
+        curl_setopt($ch, CURLOPT_USERAGENT, "dingtalk-sdk-php");
+        //https 请求
+        if (strlen($url) > 5 && strtolower(substr($url, 0, 5)) == "https") {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        }
+        //生成分隔符
+        $delimiter = '-------------' . uniqid();
+        //先将post的普通数据生成主体字符串
+        $data = '';
+        if ($postFields != null) {
+            foreach ($postFields as $name => $content) {
+                $data .= "--" . $delimiter . "\r\n";
+                $data .= 'Content-Disposition: form-data; name="' . $name . '"';
+                //multipart/form-data 不需要urlencode，参见 http:stackoverflow.com/questions/6603928/should-i-url-encode-post-data
+                $data .= "\r\n\r\n" . $content . "\r\n";
+            }
+            unset($name,$content);
+        }
 
-		//将上传的文件生成主体字符串
-		if($fileFields != null){
-			foreach ($fileFields as $name => $file) {
-			    $data .= "--" . $delimiter . "\r\n";
-			    $data .= 'Content-Disposition: form-data; name="' . $name . '"; filename="' . $file['filename'] . "\" \r\n";
-			    $data .= 'Content-Type: ' . $file['type'] . "\r\n\r\n";//多了个文档类型
+        //将上传的文件生成主体字符串
+        if ($fileFields != null) {
+            foreach ($fileFields as $name => $file) {
+                $data .= "--" . $delimiter . "\r\n";
+                $data .= 'Content-Disposition: form-data; name="' . $name . '"; filename="' . $file['filename'] . "\" \r\n";
+                $data .= 'Content-Type: ' . $file['type'] . "\r\n\r\n";//多了个文档类型
 
-			    $data .= $file['content'] . "\r\n";
-			}
-			unset($name,$file);
-		}
-		//主体结束的分隔符
-		$data .= "--" . $delimiter . "--";
+                $data .= $file['content'] . "\r\n";
+            }
+            unset($name,$file);
+        }
+        //主体结束的分隔符
+        $data .= "--" . $delimiter . "--";
 
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER , array(
-		    'Content-Type: multipart/form-data; boundary=' . $delimiter,
-		    'Content-Length: ' . strlen($data))
-		); 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            [
+            'Content-Type: multipart/form-data; boundary=' . $delimiter,
+            'Content-Length: ' . strlen($data)]
+        );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
-		$reponse = curl_exec($ch);
-		unset($data);
+        $reponse = curl_exec($ch);
+        unset($data);
 
-		if (curl_errno($ch))
-		{
-			throw new Exception(curl_error($ch),0);
-		}
-		else
-		{
-			$httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if (200 !== $httpStatusCode)
-			{
-				throw new Exception($reponse,$httpStatusCode);
-			}
-		}
-		curl_close($ch);
-		return $reponse;
-	}
+        if (curl_errno($ch)) {
+            throw new Exception(curl_error($ch), 0);
+        } else {
+            $httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if (200 !== $httpStatusCode) {
+                throw new Exception($reponse, $httpStatusCode);
+            }
+        }
+        curl_close($ch);
 
-	protected function logCommunicationError($apiName, $requestUrl, $errorCode, $responseTxt)
-	{
-		$localIp = isset($_SERVER["SERVER_ADDR"]) ? $_SERVER["SERVER_ADDR"] : "CLI";
-		$logger = new TopLogger;
-		$logger->conf["log_file"] = rtrim(TOP_SDK_WORK_DIR, '\\/') . '/' . "logs/top_comm_err_" . "_" . date("Y-m-d") . ".log";
-		$logger->conf["separator"] = "^_^";
-		$logData = array(
-		date("Y-m-d H:i:s"),
-		$apiName,
-		$localIp,
-		PHP_OS,
-		$this->sdkVersion,
-		$requestUrl,
-		$errorCode,
-		str_replace("\n","",$responseTxt)
-		);
-		$logger->log($logData);
-	}
+        return $reponse;
+    }
 
-    public function execute($request, $session = null,$bestUrl = null){
-        if(DingTalkConstant::$CALL_TYPE_OAPI == $this->apiCallType){
+    protected function logCommunicationError($apiName, $requestUrl, $errorCode, $responseTxt)
+    {
+        $localIp = isset($_SERVER["SERVER_ADDR"]) ? $_SERVER["SERVER_ADDR"] : "CLI";
+        $logger = new TopLogger();
+        $logger->conf["log_file"] = rtrim(TOP_SDK_WORK_DIR, '\\/') . '/' . "logs/top_comm_err_" . "_" . date("Y-m-d") . ".log";
+        $logger->conf["separator"] = "^_^";
+        $logData = [
+        date("Y-m-d H:i:s"),
+        $apiName,
+        $localIp,
+        PHP_OS,
+        $this->sdkVersion,
+        $requestUrl,
+        $errorCode,
+        str_replace("\n", "", $responseTxt),
+        ];
+        $logger->log($logData);
+    }
+
+    public function execute($request, $session = null, $bestUrl = null)
+    {
+        if (DingTalkConstant::$CALL_TYPE_OAPI == $this->apiCallType) {
             return $this->_executeOapi($request, $session, $bestUrl, null, null, null, null);
-        }else{
+        } else {
             return $this->_execute($request, $session, $bestUrl);
         }
     }
 
-    public function executeWithAccessKey($request, $bestUrl = null, $accessKey, $accessSecret){
+    public function executeWithAccessKey($request, $bestUrl = null, $accessKey, $accessSecret)
+    {
         return $this->executeWithCorpId($request, $bestUrl, $accessKey, $accessSecret, null, null);
     }
 
-    public function executeWithSuiteTicket($request,$bestUrl = null, $accessKey, $accessSecret, $suiteTicket){
-        return $this->executeWithCorpId($request,$bestUrl, $accessKey, $accessSecret, $suiteTicket, null);
+    public function executeWithSuiteTicket($request, $bestUrl = null, $accessKey, $accessSecret, $suiteTicket)
+    {
+        return $this->executeWithCorpId($request, $bestUrl, $accessKey, $accessSecret, $suiteTicket, null);
     }
 
-	public function executeWithCorpId($request, $bestUrl = null, $accessKey, $accessSecret, $suiteTicket, $corpId) {
-        if(DingTalkConstant::$CALL_TYPE_OAPI == $this->apiCallType){
-            return $this->_executeOapi($request, null, $bestUrl,$accessKey, $accessSecret, $suiteTicket, $corpId);
-        }else{
+    public function executeWithCorpId($request, $bestUrl = null, $accessKey, $accessSecret, $suiteTicket, $corpId)
+    {
+        if (DingTalkConstant::$CALL_TYPE_OAPI == $this->apiCallType) {
+            return $this->_executeOapi($request, null, $bestUrl, $accessKey, $accessSecret, $suiteTicket, $corpId);
+        } else {
             return $this->_execute($request, null, $bestUrl);
         }
     }
 
-    private function _executeOapi($request, $session = null,$bestUrl = null,$accessKey, $accessSecret, $suiteTicket, $corpId){
-        $result =  new ResultSet();
-        if($this->checkRequest) {
+    private function _executeOapi($request, $session = null, $bestUrl = null, $accessKey, $accessSecret, $suiteTicket, $corpId)
+    {
+        $result = new ResultSet();
+        if ($this->checkRequest) {
             try {
                 $request->check();
             } catch (Exception $e) {
-
                 $result->code = $e->getCode();
                 $result->msg = $e->getMessage();
+
                 return $result;
             }
         }
 
         $sysParams["method"] = $request->getApiMethodName();
         //系统参数放入GET请求串
-        if($bestUrl){
-            if(strpos($bestUrl,'?') === false){
+        if ($bestUrl) {
+            if (strpos($bestUrl, '?') === false) {
                 $requestUrl = $bestUrl."?";
-            }else{
+            } else {
                 $requestUrl = $bestUrl;
             }
-        }else{
+        } else {
             $requestUrl = $this->gatewayUrl."?";
         }
-        if(null != $accessKey){
+        if (null != $accessKey) {
             $timestamp = $this->getMillisecond();
             // 验证签名有效性
             $canonicalString = $this->getCanonicalStringForIsv($timestamp, $suiteTicket);
@@ -382,26 +361,26 @@ class DingTalkClient
 
             $queryParams["accessKey"] = $accessKey;
             $queryParams["signature"] = $signature;
-            $queryParams["timestamp"] = $timestamp+"";
-            if($suiteTicket != null) {
+            $queryParams["timestamp"] = $timestamp + "";
+            if ($suiteTicket != null) {
                 $queryParams["suiteTicket"] = $suiteTicket;
             }
-            if($corpId != null){
-                $queryParams["corpId"] =  $corpId;
+            if ($corpId != null) {
+                $queryParams["corpId"] = $corpId;
             }
             foreach ($queryParams as $queryParamKey => $queryParamValue) {
                 $requestUrl .= "$queryParamKey=" . urlencode($queryParamValue) . "&";
             }
-        }else{
+        } else {
             $requestUrl .= "access_token=" . urlencode($session) . "&";
         }
 
-        $apiParams = array();
+        $apiParams = [];
         //获取业务参数
         $apiParams = $request->getApiParas();
-        $fileFields = array();
+        $fileFields = [];
         foreach ($apiParams as $key => $value) {
-            if(is_array($value) && array_key_exists('type',$value) && array_key_exists('content',$value) ){
+            if (is_array($value) && array_key_exists('type', $value) && array_key_exists('content', $value)) {
                 $value['name'] = $key;
                 $fileFields[$key] = $value;
                 unset($apiParams[$key]);
@@ -412,23 +391,21 @@ class DingTalkClient
         $requestUrl = substr($requestUrl, 0, -1);
 
         //发起HTTP请求
-        try
-        {
-            if(count($fileFields) > 0){
+        try {
+            if (count($fileFields) > 0) {
                 $resp = $this->curl_with_memory_file($requestUrl, $apiParams, $fileFields);
-            }else{
-                if(DingTalkConstant::$METHOD_POST == $this->httpMethod){
+            } else {
+                if (DingTalkConstant::$METHOD_POST == $this->httpMethod) {
                     $resp = $this->curl_json($requestUrl, $apiParams);
-                }else{
+                } else {
                     $resp = $this->curl_get($requestUrl, $apiParams);
                 }
             }
-        }
-        catch (Exception $e)
-        {
-            $this->logCommunicationError($sysParams["method"],$requestUrl,"HTTP_ERROR_" . $e->getCode(),$e->getMessage());
+        } catch (Exception $e) {
+            $this->logCommunicationError($sysParams["method"], $requestUrl, "HTTP_ERROR_" . $e->getCode(), $e->getMessage());
             $result->code = $e->getCode();
             $result->msg = $e->getMessage();
+
             return $result;
         }
 
@@ -436,218 +413,206 @@ class DingTalkClient
         unset($fileFields);
         //解析TOP返回结果
         $respWellFormed = false;
-        if ("json" == $this->format)
-        {
+        if ("json" == $this->format) {
             $respObject = json_decode($resp);
-            if (null !== $respObject)
-            {
+            if (null !== $respObject) {
                 $respWellFormed = true;
             }
-        }
-        else if("xml" == $this->format)
-        {
+        } elseif ("xml" == $this->format) {
             $respObject = @simplexml_load_string($resp);
-            if (false !== $respObject)
-            {
+            if (false !== $respObject) {
                 $respWellFormed = true;
             }
         }
 
         //返回的HTTP文本不是标准JSON或者XML，记下错误日志
-        if (false === $respWellFormed)
-        {
-            $this->logCommunicationError($sysParams["method"],$requestUrl,"HTTP_RESPONSE_NOT_WELL_FORMED",$resp);
+        if (false === $respWellFormed) {
+            $this->logCommunicationError($sysParams["method"], $requestUrl, "HTTP_RESPONSE_NOT_WELL_FORMED", $resp);
             $result->code = 0;
             $result->msg = "HTTP_RESPONSE_NOT_WELL_FORMED";
+
             return $result;
         }
 
         //如果TOP返回了错误码，记录到业务错误日志中
-        if (isset($respObject->code))
-        {
-            $logger = new TopLogger;
+        if (isset($respObject->code)) {
+            $logger = new TopLogger();
             $logger->conf["log_file"] = rtrim(TOP_SDK_WORK_DIR, '\\/') . '/' . "logs/top_biz_err_" .  "_" . date("Y-m-d") . ".log";
-            $logger->log(array(
+            $logger->log([
                 date("Y-m-d H:i:s"),
-                $resp
-            ));
+                $resp,
+            ]);
         }
+
         return $respObject;
     }
 
-    private function getMillisecond() {
+    private function getMillisecond()
+    {
         list($s1, $s2) = explode(' ', microtime());
+
         return (float)sprintf('%.0f', (floatval($s1) + floatval($s2)) * 1000);
     }
 
-    private function getCanonicalStringForIsv($timestamp, $suiteTicket) {
+    private function getCanonicalStringForIsv($timestamp, $suiteTicket)
+    {
         $result = $timestamp;
-        if($suiteTicket != null) {
+        if ($suiteTicket != null) {
             $result .= "\n".$suiteTicket;
         }
+
         return $result;
     }
 
-    private function computeSignature($accessSecret, $canonicalString){
+    private function computeSignature($accessSecret, $canonicalString)
+    {
         $s = hash_hmac('sha256', $canonicalString, $accessSecret, true);
+
         return base64_encode($s);
     }
 
-    private function _execute($request, $session = null,$bestUrl = null)
-	{
-		$result =  new ResultSet(); 
-		if($this->checkRequest) {
-			try {
-				$request->check();
-			} catch (Exception $e) {
+    private function _execute($request, $session = null, $bestUrl = null)
+    {
+        $result = new ResultSet();
+        if ($this->checkRequest) {
+            try {
+                $request->check();
+            } catch (Exception $e) {
+                $result->code = $e->getCode();
+                $result->msg = $e->getMessage();
 
-				$result->code = $e->getCode();
-				$result->msg = $e->getMessage();
-				return $result;
-			}
-		}
-		//组装系统参数
-		$sysParams["v"] = $this->apiVersion;
-		$sysParams["format"] = $this->format;
-		$sysParams["method"] = $request->getApiMethodName();
-		$sysParams["timestamp"] = date("Y-m-d H:i:s");
-		if (null != $session)
-		{
-			$sysParams["session"] = $session;
-		}
-		$apiParams = array();
-		//获取业务参数
-		$apiParams = $request->getApiParas();
+                return $result;
+            }
+        }
+        //组装系统参数
+        $sysParams["v"] = $this->apiVersion;
+        $sysParams["format"] = $this->format;
+        $sysParams["method"] = $request->getApiMethodName();
+        $sysParams["timestamp"] = date("Y-m-d H:i:s");
+        if (null != $session) {
+            $sysParams["session"] = $session;
+        }
+        $apiParams = [];
+        //获取业务参数
+        $apiParams = $request->getApiParas();
 
 
-		//系统参数放入GET请求串
-		if($bestUrl){
-            if(strpos($bestUrl,'?') === false){
+        //系统参数放入GET请求串
+        if ($bestUrl) {
+            if (strpos($bestUrl, '?') === false) {
                 $requestUrl = $bestUrl."?";
-            }else{
+            } else {
                 $requestUrl = $bestUrl;
             }
-			$sysParams["partner_id"] = $this->getClusterTag();
-		}else{
-			$requestUrl = $this->gatewayUrl."?";
-			$sysParams["partner_id"] = $this->sdkVersion;
-		}
+            $sysParams["partner_id"] = $this->getClusterTag();
+        } else {
+            $requestUrl = $this->gatewayUrl."?";
+            $sysParams["partner_id"] = $this->sdkVersion;
+        }
 
-		foreach ($sysParams as $sysParamKey => $sysParamValue)
-		{
-			// if(strcmp($sysParamKey,"timestamp") != 0)
-			$requestUrl .= "$sysParamKey=" . urlencode($sysParamValue) . "&";
-		}
+        foreach ($sysParams as $sysParamKey => $sysParamValue) {
+            // if(strcmp($sysParamKey,"timestamp") != 0)
+            $requestUrl .= "$sysParamKey=" . urlencode($sysParamValue) . "&";
+        }
 
-		$fileFields = array();
-		foreach ($apiParams as $key => $value) {
-			if(is_array($value) && array_key_exists('type',$value) && array_key_exists('content',$value) ){
-				$value['name'] = $key;
-				$fileFields[$key] = $value;
-				unset($apiParams[$key]);
-			}
-		}
+        $fileFields = [];
+        foreach ($apiParams as $key => $value) {
+            if (is_array($value) && array_key_exists('type', $value) && array_key_exists('content', $value)) {
+                $value['name'] = $key;
+                $fileFields[$key] = $value;
+                unset($apiParams[$key]);
+            }
+        }
 
-		// $requestUrl .= "timestamp=" . urlencode($sysParams["timestamp"]) . "&";
-		$requestUrl = substr($requestUrl, 0, -1);
+        // $requestUrl .= "timestamp=" . urlencode($sysParams["timestamp"]) . "&";
+        $requestUrl = substr($requestUrl, 0, -1);
 
-		//发起HTTP请求
-		try
-		{
-			if(count($fileFields) > 0){
-				$resp = $this->curl_with_memory_file($requestUrl, $apiParams, $fileFields);
-			}else{
-				$resp = $this->curl($requestUrl, $apiParams);
-			}
-		}
-		catch (Exception $e)
-		{
-			$this->logCommunicationError($sysParams["method"],$requestUrl,"HTTP_ERROR_" . $e->getCode(),$e->getMessage());
-			$result->code = $e->getCode();
-			$result->msg = $e->getMessage();
-			return $result;
-		}
+        //发起HTTP请求
+        try {
+            if (count($fileFields) > 0) {
+                $resp = $this->curl_with_memory_file($requestUrl, $apiParams, $fileFields);
+            } else {
+                $resp = $this->curl($requestUrl, $apiParams);
+            }
+        } catch (Exception $e) {
+            $this->logCommunicationError($sysParams["method"], $requestUrl, "HTTP_ERROR_" . $e->getCode(), $e->getMessage());
+            $result->code = $e->getCode();
+            $result->msg = $e->getMessage();
 
-		unset($apiParams);
-		unset($fileFields);
-		//解析TOP返回结果
-		$respWellFormed = false;
-		if ("json" == $this->format)
-		{
-			$respObject = json_decode($resp);
-			if (null !== $respObject)
-			{
-				$respWellFormed = true;
-				foreach ($respObject as $propKey => $propValue)
-				{
-					$respObject = $propValue;
-				}
-			}
-		}
-		else if("xml" == $this->format)
-		{
-			$respObject = @simplexml_load_string($resp);
-			if (false !== $respObject)
-			{
-				$respWellFormed = true;
-			}
-		}
+            return $result;
+        }
 
-		//返回的HTTP文本不是标准JSON或者XML，记下错误日志
-		if (false === $respWellFormed)
-		{
-			$this->logCommunicationError($sysParams["method"],$requestUrl,"HTTP_RESPONSE_NOT_WELL_FORMED",$resp);
-			$result->code = 0;
-			$result->msg = "HTTP_RESPONSE_NOT_WELL_FORMED";
-			return $result;
-		}
+        unset($apiParams);
+        unset($fileFields);
+        //解析TOP返回结果
+        $respWellFormed = false;
+        if ("json" == $this->format) {
+            $respObject = json_decode($resp);
+            if (null !== $respObject) {
+                $respWellFormed = true;
+                foreach ($respObject as $propKey => $propValue) {
+                    $respObject = $propValue;
+                }
+            }
+        } elseif ("xml" == $this->format) {
+            $respObject = @simplexml_load_string($resp);
+            if (false !== $respObject) {
+                $respWellFormed = true;
+            }
+        }
 
-		//如果TOP返回了错误码，记录到业务错误日志中
-		if (isset($respObject->code))
-		{
-			$logger = new TopLogger;
-			$logger->conf["log_file"] = rtrim(TOP_SDK_WORK_DIR, '\\/') . '/' . "logs/top_biz_err_" .  "_" . date("Y-m-d") . ".log";
-			$logger->log(array(
-				date("Y-m-d H:i:s"),
-				$resp
-			));
-		}
-		return $respObject;
-	}
+        //返回的HTTP文本不是标准JSON或者XML，记下错误日志
+        if (false === $respWellFormed) {
+            $this->logCommunicationError($sysParams["method"], $requestUrl, "HTTP_RESPONSE_NOT_WELL_FORMED", $resp);
+            $result->code = 0;
+            $result->msg = "HTTP_RESPONSE_NOT_WELL_FORMED";
 
-	public function exec($paramsArray)
-	{
-		if (!isset($paramsArray["method"]))
-		{
-			trigger_error("No api name passed");
-		}
-		$inflector = new LtInflector;
-		$inflector->conf["separator"] = ".";
-		$requestClassName = ucfirst($inflector->camelize(substr($paramsArray["method"], 7))) . "Request";
-		if (!class_exists($requestClassName))
-		{
-			trigger_error("No such dingtalk-api: " . $paramsArray["method"]);
-		}
+            return $result;
+        }
 
-		$session = isset($paramsArray["session"]) ? $paramsArray["session"] : null;
+        //如果TOP返回了错误码，记录到业务错误日志中
+        if (isset($respObject->code)) {
+            $logger = new TopLogger();
+            $logger->conf["log_file"] = rtrim(TOP_SDK_WORK_DIR, '\\/') . '/' . "logs/top_biz_err_" .  "_" . date("Y-m-d") . ".log";
+            $logger->log([
+                date("Y-m-d H:i:s"),
+                $resp,
+            ]);
+        }
 
-		$req = new $requestClassName;
-		foreach($paramsArray as $paraKey => $paraValue)
-		{
-			$inflector->conf["separator"] = "_";
-			$setterMethodName = $inflector->camelize($paraKey);
-			$inflector->conf["separator"] = ".";
-			$setterMethodName = "set" . $inflector->camelize($setterMethodName);
-			if (method_exists($req, $setterMethodName))
-			{
-				$req->$setterMethodName($paraValue);
-			}
-		}
-		return $this->execute($req, $session);
-	}
+        return $respObject;
+    }
 
-	private function getClusterTag()
+    public function exec($paramsArray)
     {
-	    return substr($this->sdkVersion,0,11)."-cluster".substr($this->sdkVersion,11);
+        if (! isset($paramsArray["method"])) {
+            trigger_error("No api name passed");
+        }
+        $inflector = new LtInflector();
+        $inflector->conf["separator"] = ".";
+        $requestClassName = ucfirst($inflector->camelize(substr($paramsArray["method"], 7))) . "Request";
+        if (! class_exists($requestClassName)) {
+            trigger_error("No such dingtalk-api: " . $paramsArray["method"]);
+        }
+
+        $session = isset($paramsArray["session"]) ? $paramsArray["session"] : null;
+
+        $req = new $requestClassName();
+        foreach ($paramsArray as $paraKey => $paraValue) {
+            $inflector->conf["separator"] = "_";
+            $setterMethodName = $inflector->camelize($paraKey);
+            $inflector->conf["separator"] = ".";
+            $setterMethodName = "set" . $inflector->camelize($setterMethodName);
+            if (method_exists($req, $setterMethodName)) {
+                $req->$setterMethodName($paraValue);
+            }
+        }
+
+        return $this->execute($req, $session);
+    }
+
+    private function getClusterTag()
+    {
+        return substr($this->sdkVersion, 0, 11)."-cluster".substr($this->sdkVersion, 11);
     }
 }

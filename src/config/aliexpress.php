@@ -16,8 +16,8 @@ return [
                 'validation' => '',
                 'value' => null,
                 'attributes' => [
-                    'help_text' => ''
-                ]
+                    'help_text' => '',
+                ],
             ],
             'secretKey' => [
                 'type' => 'text',
@@ -26,8 +26,8 @@ return [
                 'validation' => null,
                 'value' => null,
                 'attributes' => [
-                    'help_text' => ''
-                ]
+                    'help_text' => '',
+                ],
             ],
             'country' => [
                 'type' => 'text',
@@ -37,7 +37,7 @@ return [
                 'value' => null,
                 'attributes' => [
                     'help_text' => 'Aliexpress::labels.settings.country_help',
-                ]
+                ],
             ],
             'currency' => [
                 'type' => 'text',
@@ -47,7 +47,7 @@ return [
                 'value' => null,
                 'attributes' => [
                     'help_text' => 'Aliexpress::labels.settings.currency_help',
-                ]
+                ],
             ],
             'language' => [
                 'type' => 'text',
@@ -57,9 +57,9 @@ return [
                 'value' => null,
                 'attributes' => [
                     'help_text' => 'Aliexpress::labels.settings.language_help',
-                ]
+                ],
             ],
-        ]
-    ]
+        ],
+    ],
 
 ];

@@ -20,7 +20,7 @@ return [
         'categories' => 'Categories',
         'image_count' => 'Max Images Per Product',
         'notes' => 'Notes',
-        'max_result_pages' => 'Max Result Pages to Import'
+        'max_result_pages' => 'Max Result Pages to Import',
 
-    ]
+    ],
 ];

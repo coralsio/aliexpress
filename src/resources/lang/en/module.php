@@ -3,6 +3,6 @@
 return [
     'import' => [
         'title' => 'Imports',
-        'title_singular' => 'Import'
-    ]
+        'title_singular' => 'Import',
+    ],
 ];

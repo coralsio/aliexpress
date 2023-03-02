@@ -4,11 +4,9 @@
 */
 interface iCache
 {
-	//获取缓存
-	public function getCache($key);
+    //获取缓存
+    public function getCache($key);
 
-	//更新缓存
-	public function setCache($key,$var);
-
+    //更新缓存
+    public function setCache($key, $var);
 }
-?>

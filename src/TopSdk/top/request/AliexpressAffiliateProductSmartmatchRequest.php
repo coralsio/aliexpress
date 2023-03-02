@@ -1,240 +1,240 @@
 <?php
 /**
  * TOP API: aliexpress.affiliate.product.smartmatch request
- * 
+ *
  * @author auto create
  * @since 1.0, 2020.09.25
  */
 class AliexpressAffiliateProductSmartmatchRequest
 {
-	/** 
-	 * 接入APP信息
-	 **/
-	private $app;
-	
-	/** 
-	 * 请求签名
-	 **/
-	private $appSignature;
-	
-	/** 
-	 * 设备信息
-	 **/
-	private $device;
-	
-	/** 
-	 * adid或者idfa
-	 **/
-	private $deviceId;
-	
-	/** 
-	 * 返回字段列表
-	 **/
-	private $fields;
-	
-	/** 
-	 * 关键词
-	 **/
-	private $keywords;
-	
-	/** 
-	 * 请求页数
-	 **/
-	private $pageNo;
-	
-	/** 
-	 * 商品ID
-	 **/
-	private $productId;
-	
-	/** 
-	 * 站点信息
-	 **/
-	private $site;
-	
-	/** 
-	 * 目标币种:USD, GBP, CAD, EUR, UAH, MXN, TRY, RUB, BRL, AUD, INR, JPY, IDR, SEK,KRW
-	 **/
-	private $targetCurrency;
-	
-	/** 
-	 * 目标语言:EN,RU,PT,ES,FR,ID,IT,TH,JA,AR,VI,TR,DE,HE,KO,NL,PL,MX,CL,IW,IN
-	 **/
-	private $targetLanguage;
-	
-	/** 
-	 * trackingId
-	 **/
-	private $trackingId;
-	
-	/** 
-	 * 用户信息
-	 **/
-	private $user;
-	
-	private $apiParas = array();
-	
-	public function setApp($app)
-	{
-		$this->app = $app;
-		$this->apiParas["app"] = $app;
-	}
+    /**
+     * 接入APP信息
+     **/
+    private $app;
 
-	public function getApp()
-	{
-		return $this->app;
-	}
+    /**
+     * 请求签名
+     **/
+    private $appSignature;
 
-	public function setAppSignature($appSignature)
-	{
-		$this->appSignature = $appSignature;
-		$this->apiParas["app_signature"] = $appSignature;
-	}
+    /**
+     * 设备信息
+     **/
+    private $device;
 
-	public function getAppSignature()
-	{
-		return $this->appSignature;
-	}
+    /**
+     * adid或者idfa
+     **/
+    private $deviceId;
 
-	public function setDevice($device)
-	{
-		$this->device = $device;
-		$this->apiParas["device"] = $device;
-	}
+    /**
+     * 返回字段列表
+     **/
+    private $fields;
 
-	public function getDevice()
-	{
-		return $this->device;
-	}
+    /**
+     * 关键词
+     **/
+    private $keywords;
 
-	public function setDeviceId($deviceId)
-	{
-		$this->deviceId = $deviceId;
-		$this->apiParas["device_id"] = $deviceId;
-	}
+    /**
+     * 请求页数
+     **/
+    private $pageNo;
 
-	public function getDeviceId()
-	{
-		return $this->deviceId;
-	}
+    /**
+     * 商品ID
+     **/
+    private $productId;
 
-	public function setFields($fields)
-	{
-		$this->fields = $fields;
-		$this->apiParas["fields"] = $fields;
-	}
+    /**
+     * 站点信息
+     **/
+    private $site;
 
-	public function getFields()
-	{
-		return $this->fields;
-	}
+    /**
+     * 目标币种:USD, GBP, CAD, EUR, UAH, MXN, TRY, RUB, BRL, AUD, INR, JPY, IDR, SEK,KRW
+     **/
+    private $targetCurrency;
 
-	public function setKeywords($keywords)
-	{
-		$this->keywords = $keywords;
-		$this->apiParas["keywords"] = $keywords;
-	}
+    /**
+     * 目标语言:EN,RU,PT,ES,FR,ID,IT,TH,JA,AR,VI,TR,DE,HE,KO,NL,PL,MX,CL,IW,IN
+     **/
+    private $targetLanguage;
 
-	public function getKeywords()
-	{
-		return $this->keywords;
-	}
+    /**
+     * trackingId
+     **/
+    private $trackingId;
 
-	public function setPageNo($pageNo)
-	{
-		$this->pageNo = $pageNo;
-		$this->apiParas["page_no"] = $pageNo;
-	}
+    /**
+     * 用户信息
+     **/
+    private $user;
 
-	public function getPageNo()
-	{
-		return $this->pageNo;
-	}
+    private $apiParas = [];
 
-	public function setProductId($productId)
-	{
-		$this->productId = $productId;
-		$this->apiParas["product_id"] = $productId;
-	}
+    public function setApp($app)
+    {
+        $this->app = $app;
+        $this->apiParas["app"] = $app;
+    }
 
-	public function getProductId()
-	{
-		return $this->productId;
-	}
+    public function getApp()
+    {
+        return $this->app;
+    }
 
-	public function setSite($site)
-	{
-		$this->site = $site;
-		$this->apiParas["site"] = $site;
-	}
+    public function setAppSignature($appSignature)
+    {
+        $this->appSignature = $appSignature;
+        $this->apiParas["app_signature"] = $appSignature;
+    }
 
-	public function getSite()
-	{
-		return $this->site;
-	}
+    public function getAppSignature()
+    {
+        return $this->appSignature;
+    }
 
-	public function setTargetCurrency($targetCurrency)
-	{
-		$this->targetCurrency = $targetCurrency;
-		$this->apiParas["target_currency"] = $targetCurrency;
-	}
+    public function setDevice($device)
+    {
+        $this->device = $device;
+        $this->apiParas["device"] = $device;
+    }
 
-	public function getTargetCurrency()
-	{
-		return $this->targetCurrency;
-	}
+    public function getDevice()
+    {
+        return $this->device;
+    }
 
-	public function setTargetLanguage($targetLanguage)
-	{
-		$this->targetLanguage = $targetLanguage;
-		$this->apiParas["target_language"] = $targetLanguage;
-	}
+    public function setDeviceId($deviceId)
+    {
+        $this->deviceId = $deviceId;
+        $this->apiParas["device_id"] = $deviceId;
+    }
 
-	public function getTargetLanguage()
-	{
-		return $this->targetLanguage;
-	}
+    public function getDeviceId()
+    {
+        return $this->deviceId;
+    }
 
-	public function setTrackingId($trackingId)
-	{
-		$this->trackingId = $trackingId;
-		$this->apiParas["tracking_id"] = $trackingId;
-	}
+    public function setFields($fields)
+    {
+        $this->fields = $fields;
+        $this->apiParas["fields"] = $fields;
+    }
 
-	public function getTrackingId()
-	{
-		return $this->trackingId;
-	}
+    public function getFields()
+    {
+        return $this->fields;
+    }
 
-	public function setUser($user)
-	{
-		$this->user = $user;
-		$this->apiParas["user"] = $user;
-	}
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+        $this->apiParas["keywords"] = $keywords;
+    }
 
-	public function getUser()
-	{
-		return $this->user;
-	}
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
 
-	public function getApiMethodName()
-	{
-		return "aliexpress.affiliate.product.smartmatch";
-	}
-	
-	public function getApiParas()
-	{
-		return $this->apiParas;
-	}
-	
-	public function check()
-	{
-		
-		RequestCheckUtil::checkNotNull($this->deviceId,"deviceId");
-	}
-	
-	public function putOtherTextParam($key, $value) {
-		$this->apiParas[$key] = $value;
-		$this->$key = $value;
-	}
+    public function setPageNo($pageNo)
+    {
+        $this->pageNo = $pageNo;
+        $this->apiParas["page_no"] = $pageNo;
+    }
+
+    public function getPageNo()
+    {
+        return $this->pageNo;
+    }
+
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+        $this->apiParas["product_id"] = $productId;
+    }
+
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    public function setSite($site)
+    {
+        $this->site = $site;
+        $this->apiParas["site"] = $site;
+    }
+
+    public function getSite()
+    {
+        return $this->site;
+    }
+
+    public function setTargetCurrency($targetCurrency)
+    {
+        $this->targetCurrency = $targetCurrency;
+        $this->apiParas["target_currency"] = $targetCurrency;
+    }
+
+    public function getTargetCurrency()
+    {
+        return $this->targetCurrency;
+    }
+
+    public function setTargetLanguage($targetLanguage)
+    {
+        $this->targetLanguage = $targetLanguage;
+        $this->apiParas["target_language"] = $targetLanguage;
+    }
+
+    public function getTargetLanguage()
+    {
+        return $this->targetLanguage;
+    }
+
+    public function setTrackingId($trackingId)
+    {
+        $this->trackingId = $trackingId;
+        $this->apiParas["tracking_id"] = $trackingId;
+    }
+
+    public function getTrackingId()
+    {
+        return $this->trackingId;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+        $this->apiParas["user"] = $user;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function getApiMethodName()
+    {
+        return "aliexpress.affiliate.product.smartmatch";
+    }
+
+    public function getApiParas()
+    {
+        return $this->apiParas;
+    }
+
+    public function check()
+    {
+        RequestCheckUtil::checkNotNull($this->deviceId, "deviceId");
+    }
+
+    public function putOtherTextParam($key, $value)
+    {
+        $this->apiParas[$key] = $value;
+        $this->$key = $value;
+    }
 }

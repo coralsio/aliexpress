@@ -26,10 +26,8 @@ class AliexpressCategory extends BaseModel
         return $this->hasMany(Import::class, 'aliexpress_category_import');
     }
 
-
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
     }
-
 }

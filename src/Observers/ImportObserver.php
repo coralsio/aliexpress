@@ -6,7 +6,6 @@ use Corals\Modules\Aliexpress\Models\Import;
 
 class ImportObserver
 {
-
     /**
      * @param Import $import
      */

@@ -13,7 +13,6 @@ class AliexpressObserverServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
         Import::observe(ImportObserver::class);
     }
 }

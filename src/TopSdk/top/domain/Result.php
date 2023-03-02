@@ -6,15 +6,13 @@
  */
 class Result
 {
-	
-	/** 
-	 * 类目信息
-	 **/
-	public $categories;
-	
-	/** 
-	 * 返回结果数量
-	 **/
-	public $total_result_count;	
+    /**
+     * 类目信息
+     **/
+    public $categories;
+
+    /**
+     * 返回结果数量
+     **/
+    public $total_result_count;
 }
-?>

@@ -6,20 +6,18 @@
  */
 class Promo
 {
-	
-	/** 
-	 * 主题活动的商品数量
-	 **/
-	public $product_num;
-	
-	/** 
-	 * 主题活动描述
-	 **/
-	public $promo_desc;
-	
-	/** 
-	 * 主题活动名称
-	 **/
-	public $promo_name;	
+    /**
+     * 主题活动的商品数量
+     **/
+    public $product_num;
+
+    /**
+     * 主题活动描述
+     **/
+    public $promo_desc;
+
+    /**
+     * 主题活动名称
+     **/
+    public $promo_name;
 }
-?>

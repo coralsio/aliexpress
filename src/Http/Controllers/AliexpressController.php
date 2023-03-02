@@ -23,9 +23,10 @@ class AliexpressController extends BaseController
         foreach ($config_setting as $key => $setting) {
             $settings['aliexpress_' . $key] = [
                 'name' => trans('Aliexpress::labels.settings.' . $key),
-                'settings' => $setting
+                'settings' => $setting,
             ];
         }
+
         return view('Aliexpress::aliexpress.settings')->with(compact('settings'));
     }
 
@@ -45,8 +46,10 @@ class AliexpressController extends BaseController
                 }
             }
 
-            flash(trans('Corals::messages.success.saved',
-                ['item' => trans('Aliexpress::labels.settings.aliexpress_settings')]))->success();
+            flash(trans(
+                'Corals::messages.success.saved',
+                ['item' => trans('Aliexpress::labels.settings.aliexpress_settings')]
+            ))->success();
         } catch (\Exception $exception) {
             log_exception($exception, 'AliexpressSettings', 'savedSettings');
         }
@@ -63,7 +66,7 @@ class AliexpressController extends BaseController
 
             return response()->json([
                 'level' => 'success',
-                'message' => trans('Aliexpress::labels.load_categories_success')
+                'message' => trans('Aliexpress::labels.load_categories_success'),
             ]);
         } catch (\Exception $exception) {
             return response()->json(['level' => 'error', 'message' => $exception->getMessage()]);

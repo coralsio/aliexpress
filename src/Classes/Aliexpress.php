@@ -9,7 +9,7 @@ class Aliexpress
     /**
      * Aliexpress constructor.
      */
-    function __construct()
+    public function __construct()
     {
     }
 

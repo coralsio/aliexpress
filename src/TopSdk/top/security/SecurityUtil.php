@@ -1,589 +1,579 @@
 <?php
 
-	include './SecretContext.php';
-	include './MagicCrypt.php';
+    include './SecretContext.php';
+    include './MagicCrypt.php';
 
-	class SecurityUtil
-	{
+    class SecurityUtil
+    {
+        private $BASE64_ARRAY = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+        private $SEPARATOR_CHAR_MAP;
 
-		private $BASE64_ARRAY = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-		private $SEPARATOR_CHAR_MAP;
+        public function __construct()
+        {
+            if (! defined("PHONE_SEPARATOR_CHAR")) {
+                define('PHONE_SEPARATOR_CHAR', '$');
+            }
+            if (! defined("NICK_SEPARATOR_CHAR")) {
+                define('NICK_SEPARATOR_CHAR', '~');
+            }
+            if (! defined("NORMAL_SEPARATOR_CHAR")) {
+                define('NORMAL_SEPARATOR_CHAR', chr(1));
+            }
 
-		function __construct()
-		{
-			if(!defined("PHONE_SEPARATOR_CHAR"))
-			{
-				define('PHONE_SEPARATOR_CHAR','$');
-			}
-			if(!defined("NICK_SEPARATOR_CHAR"))
-			{
-				define('NICK_SEPARATOR_CHAR','~');
-			}
-			if(!defined("NORMAL_SEPARATOR_CHAR"))
-			{
-				define('NORMAL_SEPARATOR_CHAR',chr(1));
-			}
+            $this->SEPARATOR_CHAR_MAP['nick'] = NICK_SEPARATOR_CHAR;
+            $this->SEPARATOR_CHAR_MAP['simple'] = NICK_SEPARATOR_CHAR;
+            $this->SEPARATOR_CHAR_MAP['receiver_name'] = NICK_SEPARATOR_CHAR;
+            $this->SEPARATOR_CHAR_MAP['search'] = NICK_SEPARATOR_CHAR;
+            $this->SEPARATOR_CHAR_MAP['normal'] = NORMAL_SEPARATOR_CHAR;
+            $this->SEPARATOR_CHAR_MAP['phone'] = PHONE_SEPARATOR_CHAR;
+        }
 
-			$this->SEPARATOR_CHAR_MAP['nick'] = NICK_SEPARATOR_CHAR;
-			$this->SEPARATOR_CHAR_MAP['simple'] = NICK_SEPARATOR_CHAR;
-			$this->SEPARATOR_CHAR_MAP['receiver_name'] = NICK_SEPARATOR_CHAR;
-			$this->SEPARATOR_CHAR_MAP['search'] = NICK_SEPARATOR_CHAR;
-			$this->SEPARATOR_CHAR_MAP['normal'] = NORMAL_SEPARATOR_CHAR;
-			$this->SEPARATOR_CHAR_MAP['phone'] = PHONE_SEPARATOR_CHAR;
+        /*
+        * 判断是否是base64格式的数据
+        */
+        public function isBase64Str($str)
+        {
+            $strLen = strlen($str);
+            for ($i = 0; $i < $strLen ; $i++) {
+                if (! $this->isBase64Char($str[$i])) {
+                    return false;
+                }
+            }
 
-		}
+            return true;
+        }
 
-		/*
-		* 判断是否是base64格式的数据
-		*/
-		function isBase64Str($str)
-		{
-			$strLen = strlen($str);
-			for($i = 0; $i < $strLen ; $i++)
-			{
-				if(!$this->isBase64Char($str[$i]))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
+        /*
+        * 判断是否是base64格式的字符
+        */
+        public function isBase64Char($char)
+        {
+            return strpos($this->BASE64_ARRAY, $char) !== false;
+        }
 
-		/*
-		* 判断是否是base64格式的字符
-		*/
-		function isBase64Char($char)
-		{
-			return strpos($this->BASE64_ARRAY,$char) !== false;
-		}
+        /*
+        * 使用sep字符进行trim
+        */
+        public function trimBySep($str, $sep)
+        {
+            $start = 0;
+            $end = strlen($str);
+            for ($i = 0; $i < $end; $i++) {
+                if ($str[$i] == $sep) {
+                    $start = $i + 1;
+                } else {
+                    break;
+                }
+            }
+            for ($i = $end - 1 ; $i >= 0; $i--) {
+                if ($str[$i] == $sep) {
+                    $end = $i - 1;
+                } else {
+                    break;
+                }
+            }
 
-		/*
-		* 使用sep字符进行trim
-		*/
-		function trimBySep($str,$sep)
-		{
-			$start = 0;
-			$end = strlen($str);
-			for($i = 0; $i < $end; $i++)
-			{
-				if($str[$i] == $sep)
-				{
-					$start = $i + 1;
-				}
-				else
-				{
-					break;
-				}
-			}
-			for($i = $end -1 ; $i >= 0; $i--)
-			{
-				if($str[$i] == $sep)
-				{
-					$end = $i - 1;
-				}
-				else
-				{
-					break;
-				}
-			}
-			return substr($str,$start,$end);
-		}
+            return substr($str, $start, $end);
+        }
 
-		function checkEncryptData($dataArray)
-		{
-			if(count($dataArray) == 2){
-				return  $this->isBase64Str($dataArray[0]);
-			}else{
-				return  $this->isBase64Str($dataArray[0]) && $this->isBase64Str($dataArray[1]);
-			}
-		}
+        public function checkEncryptData($dataArray)
+        {
+            if (count($dataArray) == 2) {
+                return  $this->isBase64Str($dataArray[0]);
+            } else {
+                return  $this->isBase64Str($dataArray[0]) && $this->isBase64Str($dataArray[1]);
+            }
+        }
 
-		/*
-		* 判断是否是加密数据
-		*/
-		function isEncryptDataArray($array,$type)
-		{
-			foreach ($array as $value) {
-				if(!$this->isEncryptData($value,$type)){
-					return false;
-				}
-			}
-			return true;
-		}
+        /*
+        * 判断是否是加密数据
+        */
+        public function isEncryptDataArray($array, $type)
+        {
+            foreach ($array as $value) {
+                if (! $this->isEncryptData($value, $type)) {
+                    return false;
+                }
+            }
 
-		/**
-		* 判断是否是已加密的数据，数据必须是同一个类型
-		*/
-		function isPartEncryptData($array,$type)
-		{
-			$result = false;
-			foreach ($array as $value) {
-				if($this->isEncryptData($value,$type)){
-					$result = true;
-					break;
-				}
-			}
-			return $result;
-		}
+            return true;
+        }
 
-		/*
-		* 判断是否是加密数据
-		*/
-		function isEncryptData($data,$type)
-		{
-			if(!is_string($data) || strlen($data) < 4)
-			{
-				return false;
-			}
+        /**
+        * 判断是否是已加密的数据，数据必须是同一个类型
+        */
+        public function isPartEncryptData($array, $type)
+        {
+            $result = false;
+            foreach ($array as $value) {
+                if ($this->isEncryptData($value, $type)) {
+                    $result = true;
 
-			$separator = $this->SEPARATOR_CHAR_MAP[$type];
-			$strlen = strlen($data);
-			if($data[0] != $separator || $data[$strlen -1] != $separator)
-			{
-				return false;
-			}
+                    break;
+                }
+            }
 
-			$dataArray = explode($separator,$this->trimBySep($data,$separator));
-			$arrayLength = count($dataArray);
+            return $result;
+        }
 
-			if($separator == PHONE_SEPARATOR_CHAR)
-			{
-				if($arrayLength != 3)
-				{
-					return false;
-				}
-				if($data[$strlen - 2] == $separator)
-				{
-					return $this->checkEncryptData($dataArray);
-				} 
-				else
-				{
-					$version = $dataArray[$arrayLength -1];
-					if(is_numeric($version))
-					{
-						$base64Val = $dataArray[$arrayLength -2];
-						return $this->isBase64Str($base64Val);
-					}
-				}
-			}else{
-				if($data[strlen($data) - 2] == $separator && $arrayLength == 3)
-				{
-					return $this->checkEncryptData($dataArray);
-				}
-				else if($arrayLength == 2)
-				{
-					return $this->checkEncryptData($dataArray);
-				}
-				else
-				{
-					return false;
-				}
-			}
-		}
+        /*
+        * 判断是否是加密数据
+        */
+        public function isEncryptData($data, $type)
+        {
+            if (! is_string($data) || strlen($data) < 4) {
+                return false;
+            }
 
-		function search($data, $type,$secretContext)
-		{
-			$separator = $this->SEPARATOR_CHAR_MAP[$type];
-			if('phone' == $type) {
-		        if (strlen($data) != 4 ) {
-		            throw new Exception("phoneNumber error");
-		        }
-		        return $separator.$this->hmacMD5EncryptToBase64($data, $secretContext->secret).$separator;
-			} else {
-				$compressLen = $this->getArrayValue($secretContext->appConfig,'encrypt_index_compress_len',3);
-				$slideSize = $this->getArrayValue($secretContext->appConfig,'encrypt_slide_size',4);
+            $separator = $this->SEPARATOR_CHAR_MAP[$type];
+            $strlen = strlen($data);
+            if ($data[0] != $separator || $data[$strlen - 1] != $separator) {
+                return false;
+            }
 
-				$slideList = $this->getSlideWindows($data, $slideSize);
-		        $builder = '';
-		        foreach ($slideList as $slide) {
-					$builder .= $this->hmacMD5EncryptToBase64($slide,$secretContext->secret,$compressLen);
-				}
-		        return $builder;
-			}
-		}
+            $dataArray = explode($separator, $this->trimBySep($data, $separator));
+            $arrayLength = count($dataArray);
 
-		/*
-		* 加密逻辑
-		*/
-		function encrypt($data,$type,$version,$secretContext)
-		{
-			if(!is_string($data))
-			{
-				return false;
-			}
+            if ($separator == PHONE_SEPARATOR_CHAR) {
+                if ($arrayLength != 3) {
+                    return false;
+                }
+                if ($data[$strlen - 2] == $separator) {
+                    return $this->checkEncryptData($dataArray);
+                } else {
+                    $version = $dataArray[$arrayLength - 1];
+                    if (is_numeric($version)) {
+                        $base64Val = $dataArray[$arrayLength - 2];
 
-			$separator = $this->SEPARATOR_CHAR_MAP[$type];
-			$isIndexEncrypt = $this->isIndexEncrypt($type,$version,$secretContext);
-			if($isIndexEncrypt || $type == "search"){
-				if('phone' == $type) {
-					return $this->encryptPhoneIndex($data,$separator,$secretContext);
-				} else {
-					$compressLen = $this->getArrayValue($secretContext->appConfig,'encrypt_index_compress_len',3);
-					$slideSize = $this->getArrayValue($secretContext->appConfig,'encrypt_slide_size',4);
-					return $this->encryptNormalIndex($data,$compressLen,$slideSize,$separator,$secretContext);
-				}
-			}else{
-				if('phone' == $type) {
-					return $this->encryptPhone($data,$separator,$secretContext);
-				} else {
-					return $this->encryptNormal($data,$separator,$secretContext);
-				}
-			}
+                        return $this->isBase64Str($base64Val);
+                    }
+                }
+            } else {
+                if ($data[strlen($data) - 2] == $separator && $arrayLength == 3) {
+                    return $this->checkEncryptData($dataArray);
+                } elseif ($arrayLength == 2) {
+                    return $this->checkEncryptData($dataArray);
+                } else {
+                    return false;
+                }
+            }
+        }
 
-		}
+        public function search($data, $type, $secretContext)
+        {
+            $separator = $this->SEPARATOR_CHAR_MAP[$type];
+            if ('phone' == $type) {
+                if (strlen($data) != 4) {
+                    throw new Exception("phoneNumber error");
+                }
 
-		/*
-		* 加密逻辑,手机号码格式
-		*/
-		function encryptPhone($data,$separator,$secretContext)
-		{
-			$len = strlen($data);
-			if($len < 11)
-			{
-				return $data;
-			}
-			$prefixNumber = substr($data,0,$len -8);
-			$last8Number =  substr($data,$len -8,$len);
+                return $separator.$this->hmacMD5EncryptToBase64($data, $secretContext->secret).$separator;
+            } else {
+                $compressLen = $this->getArrayValue($secretContext->appConfig, 'encrypt_index_compress_len', 3);
+                $slideSize = $this->getArrayValue($secretContext->appConfig, 'encrypt_slide_size', 4);
 
-			return $separator.$prefixNumber.$separator.Security::encrypt($last8Number,$secretContext->secret)
-				  .$separator.$secretContext->secretVersion.$separator ;
-		}
+                $slideList = $this->getSlideWindows($data, $slideSize);
+                $builder = '';
+                foreach ($slideList as $slide) {
+                    $builder .= $this->hmacMD5EncryptToBase64($slide, $secretContext->secret, $compressLen);
+                }
 
-		/*
-		* 加密逻辑,非手机号码格式
-		*/
-		function encryptNormal($data,$separator,$secretContext)
-		{
-			return $separator.Security::encrypt($data,$secretContext->secret)
-							 .$separator.$secretContext->secretVersion.$separator;
-		}
+                return $builder;
+            }
+        }
 
-		/*
-		* 解密逻辑
-		*/
-		function decrypt($data,$type,$secretContext)
-		{			
-			if(!$this->isEncryptData($data,$type))
-			{
-				throw new Exception("数据[".$data."]不是类型为[".$type."]的加密数据");
-			}
-			$dataLen = strlen($data);
-			$separator = $this->SEPARATOR_CHAR_MAP[$type];
+        /*
+        * 加密逻辑
+        */
+        public function encrypt($data, $type, $version, $secretContext)
+        {
+            if (! is_string($data)) {
+                return false;
+            }
 
-			$secretData = null;
-			if($data[$dataLen - 2] == $separator){
-				$secretData = $this->getIndexSecretData($data,$separator);
-			}else{
-				$secretData = $this->getSecretData($data,$separator);
-			}
-			
-			if($secretData == null){
-				return $data;
-			}
+            $separator = $this->SEPARATOR_CHAR_MAP[$type];
+            $isIndexEncrypt = $this->isIndexEncrypt($type, $version, $secretContext);
+            if ($isIndexEncrypt || $type == "search") {
+                if ('phone' == $type) {
+                    return $this->encryptPhoneIndex($data, $separator, $secretContext);
+                } else {
+                    $compressLen = $this->getArrayValue($secretContext->appConfig, 'encrypt_index_compress_len', 3);
+                    $slideSize = $this->getArrayValue($secretContext->appConfig, 'encrypt_slide_size', 4);
 
-			$result = Security::decrypt($secretData->originalBase64Value,$secretContext->secret);
+                    return $this->encryptNormalIndex($data, $compressLen, $slideSize, $separator, $secretContext);
+                }
+            } else {
+                if ('phone' == $type) {
+                    return $this->encryptPhone($data, $separator, $secretContext);
+                } else {
+                    return $this->encryptNormal($data, $separator, $secretContext);
+                }
+            }
+        }
 
-			if($separator == PHONE_SEPARATOR_CHAR && !$secretData->search)
-			{
-				return $secretData->originalValue.$result;
-			}
-			return $result;
-		}
+        /*
+        * 加密逻辑,手机号码格式
+        */
+        public function encryptPhone($data, $separator, $secretContext)
+        {
+            $len = strlen($data);
+            if ($len < 11) {
+                return $data;
+            }
+            $prefixNumber = substr($data, 0, $len - 8);
+            $last8Number = substr($data, $len - 8, $len);
 
-		/*
-		* 判断是否是公钥数据
-		*/
-		function isPublicData($data,$type)
-		{
-			$secretData = $this->getSecretDataByType($data,$type);
-			if(empty($secretData)){
-				return false;
-			}
-			if(intval($secretData->secretVersion) < 0){
-				return true;
-			}
-			return false;
-		}
+            return $separator.$prefixNumber.$separator.Security::encrypt($last8Number, $secretContext->secret)
+                  .$separator.$secretContext->secretVersion.$separator ;
+        }
 
-		function getSecretDataByType($data,$type)
-		{
-			$separator = $this->SEPARATOR_CHAR_MAP[$type];
-			$dataLen = strlen($data);
+        /*
+        * 加密逻辑,非手机号码格式
+        */
+        public function encryptNormal($data, $separator, $secretContext)
+        {
+            return $separator.Security::encrypt($data, $secretContext->secret)
+                             .$separator.$secretContext->secretVersion.$separator;
+        }
 
-			if($data[$dataLen - 2] == $separator){
-				return $secretData = $this->getIndexSecretData($data,$separator);
-			}else{
-				return  $secretData = $this->getSecretData($data,$separator);
-			}
-		}
+        /*
+        * 解密逻辑
+        */
+        public function decrypt($data, $type, $secretContext)
+        {
+            if (! $this->isEncryptData($data, $type)) {
+                throw new Exception("数据[".$data."]不是类型为[".$type."]的加密数据");
+            }
+            $dataLen = strlen($data);
+            $separator = $this->SEPARATOR_CHAR_MAP[$type];
 
-		/*
-		* 分解密文
-		*/
-		function getSecretData($data,$separator)
-		{
-			$secretData = new SecretData;
-			$dataArray = explode($separator,$this->trimBySep($data,$separator));
-			$arrayLength = count($dataArray);
+            $secretData = null;
+            if ($data[$dataLen - 2] == $separator) {
+                $secretData = $this->getIndexSecretData($data, $separator);
+            } else {
+                $secretData = $this->getSecretData($data, $separator);
+            }
 
-			if($separator == PHONE_SEPARATOR_CHAR)
-			{
-				if($arrayLength != 3){
-					return null;
-				}else{
-					$version = $dataArray[2];
-					if(is_numeric($version))
-					{
-						$secretData->originalValue = $dataArray[0];
-						$secretData->originalBase64Value = $dataArray[1];
-						$secretData->secretVersion = $version;
-					}
-				}
-			}
-			else
-			{
-				if($arrayLength != 2){
-					return null;
-				}else{
-					$version = $dataArray[1];
-					if(is_numeric($version))
-					{
-						$secretData->originalBase64Value = $dataArray[0];
-						$secretData->secretVersion = $version;
-					}
-				}
-			}
-			return $secretData;
-		}
+            if ($secretData == null) {
+                return $data;
+            }
 
-		function getIndexSecretData($data,$separator) {
-			$secretData = new SecretData;
-			$dataArray = explode($separator,$this->trimBySep($data,$separator));
-			$arrayLength = count($dataArray);
+            $result = Security::decrypt($secretData->originalBase64Value, $secretContext->secret);
 
-	        if($separator == PHONE_SEPARATOR_CHAR) {
-	            if ($arrayLength != 3) {
-	                return null;
-	            }else{
-					$version = $dataArray[2];
-					if(is_numeric($version))
-					{
-						$secretData->originalValue = $dataArray[0];
-						$secretData->originalBase64Value = $dataArray[1];
-						$secretData->secretVersion = $version;
-					}
-	            }
-	            
-	        } else {
-	        	if($arrayLength != 3){
-					return null;
-				} else {
-					$version = $dataArray[2];
-					if(is_numeric($version))
-					{
-						$secretData->originalBase64Value = $dataArray[0];
-						$secretData->originalValue = $dataArray[1];
-						$secretData->secretVersion = $version;
-					}
-				}
-	        }
+            if ($separator == PHONE_SEPARATOR_CHAR && ! $secretData->search) {
+                return $secretData->originalValue.$result;
+            }
 
-	        $secretData->search = true;
-	        return $secretData;
-		}
+            return $result;
+        }
 
-		/**
-	     * 判断密文是否支持检索
-	     * 
-	     * @param key
-	     * @param version
-	     * @return
-	     */
-		function isIndexEncrypt($key,$version,$secretContext)
-		{
-	        if ($version != null && $version < 0) {
-	            $key = "previous_".$key;
-	        } else {
-	            $key = "current_".$key;
-	        }
+        /*
+        * 判断是否是公钥数据
+        */
+        public function isPublicData($data, $type)
+        {
+            $secretData = $this->getSecretDataByType($data, $type);
+            if (empty($secretData)) {
+                return false;
+            }
+            if (intval($secretData->secretVersion) < 0) {
+                return true;
+            }
 
-	        return $secretContext->appConfig != null && 
-	               array_key_exists($key,$secretContext->appConfig) && 
-	               $secretContext->appConfig[$key] == "2";
-		}
+            return false;
+        }
 
-		function isLetterOrDigit($ch)
-		{
-			$code = ord($ch);
-			if (0 <= $code && $code <= 127) {
-            	return true;
-        	}
-        	return false;
-		}
+        public function getSecretDataByType($data, $type)
+        {
+            $separator = $this->SEPARATOR_CHAR_MAP[$type];
+            $dataLen = strlen($data);
 
-		function utf8_strlen($string = null) {
-			// 将字符串分解为单元
-			preg_match_all("/./us", $string, $match);
-			// 返回单元个数
-			return count($match[0]);
-		}
+            if ($data[$dataLen - 2] == $separator) {
+                return $secretData = $this->getIndexSecretData($data, $separator);
+            } else {
+                return  $secretData = $this->getSecretData($data, $separator);
+            }
+        }
 
-		function utf8_substr($string,$start,$end) {
-			// 将字符串分解为单元
-			preg_match_all("/./us", $string, $match);
-			// 返回单元个数
-			$result = "";
-			for($i = $start; $i < $end; $i++){
-				$result .= $match[0][$i];
-			}
-			return $result;
-		}
+        /*
+        * 分解密文
+        */
+        public function getSecretData($data, $separator)
+        {
+            $secretData = new SecretData();
+            $dataArray = explode($separator, $this->trimBySep($data, $separator));
+            $arrayLength = count($dataArray);
 
-		function utf8_str_at($string,$index) {
-			// 将字符串分解为单元
-			preg_match_all("/./us", $string, $match);
-			// 返回单元个数
-			return $match[0][$index];
-		}
+            if ($separator == PHONE_SEPARATOR_CHAR) {
+                if ($arrayLength != 3) {
+                    return null;
+                } else {
+                    $version = $dataArray[2];
+                    if (is_numeric($version)) {
+                        $secretData->originalValue = $dataArray[0];
+                        $secretData->originalBase64Value = $dataArray[1];
+                        $secretData->secretVersion = $version;
+                    }
+                }
+            } else {
+                if ($arrayLength != 2) {
+                    return null;
+                } else {
+                    $version = $dataArray[1];
+                    if (is_numeric($version)) {
+                        $secretData->originalBase64Value = $dataArray[0];
+                        $secretData->secretVersion = $version;
+                    }
+                }
+            }
 
-		function compress($input,$toLength) {
-			if($toLength < 0) {
-				return null;
-			}
-			$output = array();
-			for($i = 0; $i < $toLength; $i++) {
-				$output[$i] = chr(0);
-			}
-			$input = $this->getBytes($input);
-			$inputLength = count($input);
-			for ($i = 0; $i < $inputLength; $i++) {
-	            $index_output = $i % $toLength;
-	            $output[$index_output] = $output[$index_output] ^ $input[$i];
-	        }
-	        return $output;
-		}
+            return $secretData;
+        }
 
-	    /**
-	     * @see #hmacMD5Encrypt
-	     * 
-	     * @param encryptText
-	     *            被签名的字符串
-	     * @param encryptKey
-	     *            密钥
-	     * @param compressLen压缩长度
-	     * @return
-	     * @throws Exception
-	     */
-		function hmacMD5EncryptToBase64($encryptText,$encryptKey,$compressLen = 0) {
-			$encryptResult = Security::hmac_md5($encryptText,$encryptKey);
-			if($compressLen != 0){
-				$encryptResult = $this->compress($encryptResult,$compressLen);
-			}
-			return base64_encode($this->toStr($encryptResult));
-		}
+        public function getIndexSecretData($data, $separator)
+        {
+            $secretData = new SecretData();
+            $dataArray = explode($separator, $this->trimBySep($data, $separator));
+            $arrayLength = count($dataArray);
 
+            if ($separator == PHONE_SEPARATOR_CHAR) {
+                if ($arrayLength != 3) {
+                    return null;
+                } else {
+                    $version = $dataArray[2];
+                    if (is_numeric($version)) {
+                        $secretData->originalValue = $dataArray[0];
+                        $secretData->originalBase64Value = $dataArray[1];
+                        $secretData->secretVersion = $version;
+                    }
+                }
+            } else {
+                if ($arrayLength != 3) {
+                    return null;
+                } else {
+                    $version = $dataArray[2];
+                    if (is_numeric($version)) {
+                        $secretData->originalBase64Value = $dataArray[0];
+                        $secretData->originalValue = $dataArray[1];
+                        $secretData->secretVersion = $version;
+                    }
+                }
+            }
 
-	    /**
-	     * 生成滑动窗口
-	     * 
-	     * @param input
-	     * @param slideSize
-	     * @return
-	     */
-		function getSlideWindows($input,$slideSize = 4)
-		{
-			$endIndex = 0;
-			$startIndex = 0;
-			$currentWindowSize = 0;
-			$currentWindow = null;
-			$dataLength = $this->utf8_strlen($input);
-			$windows = array();
-			while($endIndex < $dataLength || $currentWindowSize > $slideSize) 
-			{
-				$startsWithLetterOrDigit = false;
-				if(!empty($currentWindow)){
-					$startsWithLetterOrDigit = $this->isLetterOrDigit($this->utf8_str_at($currentWindow,0));
-				}
-				if($endIndex == $dataLength && $startsWithLetterOrDigit == false){
-					break;
-				}
-				if($currentWindowSize == $slideSize && 
-				   $startsWithLetterOrDigit == false && 
-				   $this->isLetterOrDigit($this->utf8_str_at($input,$endIndex))) {
-				   $endIndex ++;
-				   $currentWindow = $this->utf8_substr($input,$startIndex,$endIndex);
-				   $currentWindowSize = 5;
-				} else {
-				    if($endIndex != 0){
-				    	if($startsWithLetterOrDigit){
-				    		$currentWindowSize -= 1;
-				    	}else{
-				    		$currentWindowSize -= 2;
-				    	}
-				    	$startIndex ++;
-				    }
+            $secretData->search = true;
 
-	                while ($currentWindowSize < $slideSize && $endIndex < $dataLength) {
-	                    $currentChar = $this->utf8_str_at($input,$endIndex);
-	                    if ($this->isLetterOrDigit($currentChar)) {
-	                        $currentWindowSize += 1;
-	                    } else {
-	                        $currentWindowSize += 2;
-	                    }
-	                    $endIndex++;
-	                }
-	                $currentWindow = $this->utf8_substr($input,$startIndex,$endIndex);
-				}
-				array_push($windows,$currentWindow);
-			}
-			return $windows;
-		}
+            return $secretData;
+        }
 
-		function encryptPhoneIndex($data,$separator,$secretContext) {
-			$dataLength = strlen($data);
-			if($dataLength < 11) {
-				return $data;
-			}
-			$last4Number = substr($data,$dataLength -4 ,$dataLength);
-			return $separator.$this->hmacMD5EncryptToBase64($last4Number,$secretContext->secret).$separator
-				   .Security::encrypt($data,$secretContext->secret).$separator.$secretContext->secretVersion
-				   .$separator.$separator;
-		}
+        /**
+         * 判断密文是否支持检索
+         *
+         * @param key
+         * @param version
+         * @return
+         */
+        public function isIndexEncrypt($key, $version, $secretContext)
+        {
+            if ($version != null && $version < 0) {
+                $key = "previous_".$key;
+            } else {
+                $key = "current_".$key;
+            }
 
-		function encryptNormalIndex($data,$compressLen,$slideSize,$separator,$secretContext) {
-			$slideList = $this->getSlideWindows($data, $slideSize);
-			$builder = "";
-			foreach ($slideList as $slide) {
-				$builder .= $this->hmacMD5EncryptToBase64($slide,$secretContext->secret,$compressLen);
-			}
-			return $separator.Security::encrypt($data,$secretContext->secret).$separator.$builder.$separator
-				   .$secretContext->secretVersion.$separator.$separator;
-		}
+            return $secretContext->appConfig != null &&
+                   array_key_exists($key, $secretContext->appConfig) &&
+                   $secretContext->appConfig[$key] == "2";
+        }
 
-		function getArrayValue($array,$key,$default) {
-			if(array_key_exists($key, $array)){
-				return $array[$key];
-			}
-			return $default;
-		}
+        public function isLetterOrDigit($ch)
+        {
+            $code = ord($ch);
+            if (0 <= $code && $code <= 127) {
+                return true;
+            }
 
-		function getBytes($string) {  
-	        $bytes = array();  
-	        for($i = 0; $i < strlen($string); $i++){  
-	             $bytes[] = ord($string[$i]);  
-	        }  
-	        return $bytes;  
-	    }  
+            return false;
+        }
 
-		function toStr($bytes) {
-			if(!is_array($bytes)){
-				return $bytes;
-			}
-	        $str = '';	        
-	        foreach($bytes as $ch) {
-	            $str .= chr($ch);
-	        }
-	        return $str;
-	    }
-	}
-?>
+        public function utf8_strlen($string = null)
+        {
+            // 将字符串分解为单元
+            preg_match_all("/./us", $string, $match);
+            // 返回单元个数
+            return count($match[0]);
+        }
+
+        public function utf8_substr($string, $start, $end)
+        {
+            // 将字符串分解为单元
+            preg_match_all("/./us", $string, $match);
+            // 返回单元个数
+            $result = "";
+            for ($i = $start; $i < $end; $i++) {
+                $result .= $match[0][$i];
+            }
+
+            return $result;
+        }
+
+        public function utf8_str_at($string, $index)
+        {
+            // 将字符串分解为单元
+            preg_match_all("/./us", $string, $match);
+            // 返回单元个数
+            return $match[0][$index];
+        }
+
+        public function compress($input, $toLength)
+        {
+            if ($toLength < 0) {
+                return null;
+            }
+            $output = [];
+            for ($i = 0; $i < $toLength; $i++) {
+                $output[$i] = chr(0);
+            }
+            $input = $this->getBytes($input);
+            $inputLength = count($input);
+            for ($i = 0; $i < $inputLength; $i++) {
+                $index_output = $i % $toLength;
+                $output[$index_output] = $output[$index_output] ^ $input[$i];
+            }
+
+            return $output;
+        }
+
+        /**
+         * @see #hmacMD5Encrypt
+         *
+         * @param encryptText
+         *            被签名的字符串
+         * @param encryptKey
+         *            密钥
+         * @param compressLen压缩长度
+         * @return
+         * @throws Exception
+         */
+        public function hmacMD5EncryptToBase64($encryptText, $encryptKey, $compressLen = 0)
+        {
+            $encryptResult = Security::hmac_md5($encryptText, $encryptKey);
+            if ($compressLen != 0) {
+                $encryptResult = $this->compress($encryptResult, $compressLen);
+            }
+
+            return base64_encode($this->toStr($encryptResult));
+        }
+
+        /**
+         * 生成滑动窗口
+         *
+         * @param input
+         * @param slideSize
+         * @return
+         */
+        public function getSlideWindows($input, $slideSize = 4)
+        {
+            $endIndex = 0;
+            $startIndex = 0;
+            $currentWindowSize = 0;
+            $currentWindow = null;
+            $dataLength = $this->utf8_strlen($input);
+            $windows = [];
+            while ($endIndex < $dataLength || $currentWindowSize > $slideSize) {
+                $startsWithLetterOrDigit = false;
+                if (! empty($currentWindow)) {
+                    $startsWithLetterOrDigit = $this->isLetterOrDigit($this->utf8_str_at($currentWindow, 0));
+                }
+                if ($endIndex == $dataLength && $startsWithLetterOrDigit == false) {
+                    break;
+                }
+                if ($currentWindowSize == $slideSize &&
+                   $startsWithLetterOrDigit == false &&
+                   $this->isLetterOrDigit($this->utf8_str_at($input, $endIndex))) {
+                    $endIndex++;
+                    $currentWindow = $this->utf8_substr($input, $startIndex, $endIndex);
+                    $currentWindowSize = 5;
+                } else {
+                    if ($endIndex != 0) {
+                        if ($startsWithLetterOrDigit) {
+                            $currentWindowSize -= 1;
+                        } else {
+                            $currentWindowSize -= 2;
+                        }
+                        $startIndex++;
+                    }
+
+                    while ($currentWindowSize < $slideSize && $endIndex < $dataLength) {
+                        $currentChar = $this->utf8_str_at($input, $endIndex);
+                        if ($this->isLetterOrDigit($currentChar)) {
+                            $currentWindowSize += 1;
+                        } else {
+                            $currentWindowSize += 2;
+                        }
+                        $endIndex++;
+                    }
+                    $currentWindow = $this->utf8_substr($input, $startIndex, $endIndex);
+                }
+                array_push($windows, $currentWindow);
+            }
+
+            return $windows;
+        }
+
+        public function encryptPhoneIndex($data, $separator, $secretContext)
+        {
+            $dataLength = strlen($data);
+            if ($dataLength < 11) {
+                return $data;
+            }
+            $last4Number = substr($data, $dataLength - 4, $dataLength);
+
+            return $separator.$this->hmacMD5EncryptToBase64($last4Number, $secretContext->secret).$separator
+                   .Security::encrypt($data, $secretContext->secret).$separator.$secretContext->secretVersion
+                   .$separator.$separator;
+        }
+
+        public function encryptNormalIndex($data, $compressLen, $slideSize, $separator, $secretContext)
+        {
+            $slideList = $this->getSlideWindows($data, $slideSize);
+            $builder = "";
+            foreach ($slideList as $slide) {
+                $builder .= $this->hmacMD5EncryptToBase64($slide, $secretContext->secret, $compressLen);
+            }
+
+            return $separator.Security::encrypt($data, $secretContext->secret).$separator.$builder.$separator
+                   .$secretContext->secretVersion.$separator.$separator;
+        }
+
+        public function getArrayValue($array, $key, $default)
+        {
+            if (array_key_exists($key, $array)) {
+                return $array[$key];
+            }
+
+            return $default;
+        }
+
+        public function getBytes($string)
+        {
+            $bytes = [];
+            for ($i = 0; $i < strlen($string); $i++) {
+                $bytes[] = ord($string[$i]);
+            }
+
+            return $bytes;
+        }
+
+        public function toStr($bytes)
+        {
+            if (! is_array($bytes)) {
+                return $bytes;
+            }
+            $str = '';
+            foreach ($bytes as $ch) {
+                $str .= chr($ch);
+            }
+
+            return $str;
+        }
+    }

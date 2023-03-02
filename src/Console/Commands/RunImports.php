@@ -1,4 +1,6 @@
-<?php namespace Corals\Modules\Aliexpress\Console\Commands;
+<?php
+
+namespace Corals\Modules\Aliexpress\Console\Commands;
 
 use Corals\Modules\Aliexpress\Models\Import;
 use Corals\Modules\Aliexpress\TopSdk\TopSdkManager;
@@ -19,20 +21,21 @@ class RunImports extends Command
         return $this->processImports();
     }
 
-
     public function processImports()
     {
         $running_import = Import::where('status', 'in_progress')->first();
 
         if ($running_import) {
             $this->info("There is already running import process ");
+
             return false;
         }
 
         $import = Import::pending()->orderBy('created_at', 'asc')->first();
 
-        if (!$import) {
+        if (! $import) {
             $this->info("There is no Pending imports");
+
             return true;
         }
 
@@ -103,7 +106,7 @@ class RunImports extends Command
         } catch (\Exception $exception) {
             $errors = [];
 
-            if (!empty($errors)) {
+            if (! empty($errors)) {
                 $error = implode("\n", $errors);
             } else {
                 $error = $exception->getMessage();
@@ -117,7 +120,7 @@ class RunImports extends Command
         }
     }
 
-    function parseResponse($import, $products)
+    public function parseResponse($import, $products)
     {
         $productService = new \ImportProductService();
 
@@ -132,7 +135,7 @@ class RunImports extends Command
 
             $video = data_get($product, 'product_video_url');
 
-            if (!empty($video)) {
+            if (! empty($video)) {
                 $description .= '<p><video controls="controls" src="' . $video . '">
                             Your browser does not support the HTML5 Video element.</video></p>';
             }
@@ -193,13 +196,14 @@ class RunImports extends Command
                 if ($i == 1) {
                     $productModel->addMediaFromUrl($product['product_main_image_url'])->withCustomProperties([
                         'root' => 'media_import',
-                        'featured' => true
+                        'featured' => true,
                     ])->toMediaCollection($productModel->galleryMediaCollection);
+
                     continue;
                 }
                 $imgURL = data_get($product, 'product_small_image_urls.string.' . ($i - 2));
 
-                if (!$imgURL) {
+                if (! $imgURL) {
                     break;
                 }
                 $imgURL = trim($imgURL, '//');

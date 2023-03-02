@@ -9,7 +9,7 @@ use Corals\Modules\Aliexpress\database\seeds\AliexpressDatabaseSeeder;
 class UninstallModuleServiceProvider extends BaseUninstallModuleServiceProvider
 {
     protected $migrations = [
-        AliexpressTables::class
+        AliexpressTables::class,
     ];
 
     protected function providerBooted()

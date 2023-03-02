@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Corals\Modules\Aliexpress\TopSdk;
-
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -82,7 +80,7 @@ class TopSdkManager
         foreach ($parameters as $key => $value) {
             $setMethod = sprintf('set%s', ucfirst($key));
 
-            if (empty($value) || !method_exists($request, $setMethod)) {
+            if (empty($value) || ! method_exists($request, $setMethod)) {
                 continue;
             }
 

@@ -7,7 +7,6 @@ use Corals\Modules\Aliexpress\DataTables\ImportsDataTable;
 use Corals\Modules\Aliexpress\Http\Requests\ImportRequest;
 use Corals\Modules\Aliexpress\Models\Import;
 
-
 class ImportsController extends BaseController
 {
     protected $excludedRequestParams = ['categories'];
@@ -43,7 +42,7 @@ class ImportsController extends BaseController
         $import = new Import();
 
         $this->setViewSharedData([
-            'title_singular' => trans('Corals::labels.create_title', ['title' => $this->title_singular])
+            'title_singular' => trans('Corals::labels.create_title', ['title' => $this->title_singular]),
         ]);
 
         return view('Aliexpress::imports.create_edit')->with(compact('import'));
@@ -96,7 +95,7 @@ class ImportsController extends BaseController
     public function edit(ImportRequest $request, Import $import)
     {
         $this->setViewSharedData([
-            'title_singular' => trans('Corals::labels.update_title', ['title' => $import->title])
+            'title_singular' => trans('Corals::labels.update_title', ['title' => $import->title]),
         ]);
 
         return view('Aliexpress::imports.create_edit')->with(compact('import'));
@@ -140,7 +139,7 @@ class ImportsController extends BaseController
 
             $message = [
                 'level' => 'success',
-                'message' => trans('Corals::messages.success.deleted', ['item' => $this->title_singular])
+                'message' => trans('Corals::messages.success.deleted', ['item' => $this->title_singular]),
             ];
         } catch (\Exception $exception) {
             log_exception($exception, Import::class, 'destroy');
@@ -149,5 +148,4 @@ class ImportsController extends BaseController
 
         return response()->json($message);
     }
-
 }

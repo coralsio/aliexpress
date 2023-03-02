@@ -8,4 +8,3 @@ Route::group(['prefix' => 'aliexpress'], function () {
     Route::post('settings/{store?}', 'AliexpressController@saveSettings');
     Route::post('load-categories/{store?}', 'AliexpressController@loadCategories');
 });
-
