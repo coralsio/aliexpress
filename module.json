@@ -1,0 +1,21 @@
+{
+    "code": "corals-aliexpress",
+    "name": "Aliexpress Module",
+    "author": "Corals",
+    "type": "module",
+    "description": "Aliexpress Package",
+    "namespace": "Corals\\Modules\\Aliexpress\\",
+    "provider": "AliexpressServiceProvider",
+    "version": "1.0",
+    "load_order": "0",
+    "folder": "Aliexpress",
+    "autoload": "psr-4",
+    "icon": "fa fa-shopping-cart",
+    "require": {
+        "corals-foundation": "^6.0"
+    },
+    "supported_platforms": [
+        "Ecommerce",
+        "Marketplace"
+    ]
+}

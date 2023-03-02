@@ -1,0 +1,405 @@
+Primary CATEGORIES,CATEGORIES ID,Secondary CATEGORIES,CATEGORIES ID
+Underwear,200574005,,
+,200574005,Bikinis,200001866
+,200574005,Men's Socks,200000384
+,200574005,Men's Sleep & Lounge,200001813
+,200574005,Men's Underwears,200001865
+,200574005,Women's Sleep & Lounge,200001894
+,200574005,Women's Intimates,200000349
+,200574005,Women's Socks & Hosiery,200000854
+Apparel & Accessories,3,,
+,3,Sportswears,200003274
+Automobiles & Motorcycles,34,,
+,34,Auto Replacement Parts,200000212
+,34,Car Electronics,200000285
+,34,Car Lights,200002005
+,34,Car Repair Tool,200259142
+,34,Car Wash & Maintenance,200260142
+,34,Exterior Accessories,200003427
+,34,Interior Accessories,200003411
+,34,Motorcycle Accessories & Parts,200000242
+,34,Other Vehicle Parts & Accessories,200004043
+Beauty & Health,66,,
+,66,Bath & Shower,200001288
+,66,Fragrances & Deodorants,200001221
+,66,Hair Care & Styling,200001168
+,66,Health Care,200001355
+,66,Makeup,660103
+,66,Nail Art & Tools,200001147
+,66,Oral Hygiene,3305
+,66,Sanitary Paper,1513
+,66,Sex Products,200001508
+,66,Shaving & Hair Removal,660302
+,66,Skin Care,3306
+,66,Skin Care Tool,100000616
+,66,Tattoo & Body Art,200001976
+,66,Tools & Accessories,200001187
+Computer & Office,7,,
+,7,Computer Cables & Connectors,70806
+,7,Computer Cleaners,708022
+,7,Computer Components,200001076
+,7,Computer Peripherals,200001081
+,7,DIY Gaming Computer,200048142
+,7,Demo board & Accessories,200185144
+,7,Desktops,701
+,7,External Storage,200001074
+,7,Industrial Computer & Accessories,100005330
+,7,Internal Storage,200154144
+,7,KVM Switches,100005329
+,7,Laptop Accessories,200001083
+,7,Laptops,702
+,7,Mini PC,70803003
+,7,Networking,200001077
+,7,Office Electronics,200003782
+,7,Office Software,200318143
+,7,Servers,703
+,7,Tablet Accessories,200001085
+,7,Tablets,200001086
+Consumer Electronics,44,,
+,44,Accessories & Parts,629
+,44,Camera & Photo,100000305
+,44,Electronic Cigarettes,200003561
+,44,Games & Accessories,100000310
+,44,Home Audio & Video Equipments,100000308
+,44,Portable Audio & Video,100000306
+,44,Smart Electronics,200003803
+Electronic Components & Supplies,502,,
+,502,Active Components,4001
+,502,EL Products,150412
+,502,Electronic Accessories & Supplies,4003
+,502,Electronic Data Systems,504
+,502,Electronic Signs,150407
+,502,Electronics Production Machinery,4002
+,502,Electronics Stocks,515
+,502,Optoelectronic Displays,4004
+,502,Other Electronic Components,4099
+,502,Passive Components,4005
+Food,2,,
+,2,Coffee,200001238
+,2,Dried Fruit,200001317
+,2,Dried Goods / Local Specialties,200003573
+,2,Grain Products,200001287
+,2,Grocery,200180142
+,2,Medlar,200003606
+,2,Nut & Kernel,200001321
+,2,Tea,100007269
+Furniture,1503,,
+,1503,Bar Furniture,100001029
+,1503,Café Furniture,200130145
+,1503,Children Furniture,100003019
+,1503,Commercial Furniture,150301
+,1503,Furniture Accessories,3712
+,1503,Furniture Parts,3708
+,1503,Home Furniture,150303
+,1503,Office Furniture,150304
+,1503,Other Furniture,150399
+,1503,Outdoor Furniture,150302
+Hair Extensions & Wigs,200165144,,
+,200165144,Human Wigs( For Black),127886013
+,200165144,Beauty Supply,200317142
+,200165144,Hair Salon Supply,200319142
+,200165144,Human Hair (For Black),200168146
+,200165144,Human Hair (For White),200166144
+,200165144,Synthetic Hair,200167144
+,200165144,Synthetic Hair(For White),200396142
+Home & Garden,15,,
+,15,"Arts,Crafts & Sewing",200003937
+,15,Collectibles,200003998
+,15,Festive & Party Supplies,100001824
+,15,Garden Supplies,125
+,15,Home Decor,3710
+,15,Home Storage & Organization,1541
+,15,Home Textile,405
+,15,Household Merchandises,200033149
+,15,"Kitchen,Dining & Bar",200000920
+,15,Pet Products,100006664
+Home Appliances,6,,
+,6,Commercial Appliances,200235142
+,6,Home Appliance Parts,100000039
+,6,Home Appliances Stocks,631
+,6,Household Appliances,200294142
+,6,Kitchen Appliances,100000041
+,6,Major Appliances,200293142
+,6,Other Home Appliances,628
+,6,Personal Care Appliances,200165142
+Home Improvement,13,,
+,13,Bathroom Fixture,200066142
+,13,Boards,100005320
+,13,Building Glass,1315
+,13,Ceilings,100007099
+,13,"Countertops,Vanity Tops & Table Tops",131210
+,13,Curtain Walls & Accessories,100005265
+,13,"Doors, Gates & Windows",100007064
+,13,Earthwork Products,100005281
+,13,Electrical Equipment & Supplies,5
+,13,Family Intelligence System,200321150
+,13,Flooring & Accessories,100006266
+,13,Functional Material,200001751
+,13,Garden Landscaping & Decking,12504
+,13,Hardware,42
+,13,"Heating, Cooling & Vents",200366148
+,13,Kitchen Fixture,200066144
+,13,Ladders & Scaffoldings,1330
+,13,Landscaping Stone,131211
+,13,Metal Building Materials,200001382
+,13,Other Home Improvement,1333
+,13,Painting Supplies & Wall Treatments,200264142
+,13,Plastic Building Materials,100005310
+,13,Plumbing,200282142
+,13,Quarry Stone & Slabs,1312
+,13,Stairs & Stair Parts,100007071
+,13,Stone Carvings and Sculptures,131207
+,13,Sunrooms & Glass Houses,100007082
+,13,Tiles & Accessories,100006285
+,13,Timber,100005335
+Jewelry & Accessories,36,,
+,36,Fashion Jewelry,1509
+,36,Fine Jewelry,200001680
+,36,Jewelry Findings & Components,200000181
+,36,Jewelry Packaging & Display,200001479
+,36,Jewelry Tools & Equipments,200001478
+,36,Smart Jewelry,200370154
+Lights & Lighting,39,,
+,39,Commercial Lighting,200001493
+,39,Holiday Lighting,150403
+,39,Indoor Lighting,1504
+,39,LED Lighting,390501
+,39,Lighting Accessories,530
+,39,Lighting Bulbs & Tubes,150402
+,39,Novelty Lighting,200001067
+,39,Other Lights & Lighting Products,3999
+,39,Outdoor Lighting,150401
+,39,Portable Lighting,390503
+,39,Professional Light,200001704
+,39,Special Engineering Lighting,200326144
+,39,Night Lights,39050508
+Luggage & Bags,1524,,
+,1524,Backpacks,152401
+,1524,Bag Parts & Accessories,152409
+,1524,Briefcases,152402
+,1524,Drawstring Bags,200333142
+,1524,Handbags,100002856
+,1524,Leisure Bags,3806
+,1524,Luggage & Travel Bags,152404
+,1524,Other Luggage & Bags,152499
+,1524,Special Purpose Bags,3805
+,1524,Travel Accessories,200000523
+,1524,Waist Packs,380650
+,1524,Wallets & Holders,3803
+Mother & Kids,1501,,
+,1501,Activity & Gear,200002039
+,1501,Baby Care,200001330
+,1501,Baby Clothing,310
+,1501,Baby Food,200364142
+,1501,Baby Furniture,200332158
+,1501,Baby Shoes,200000937
+,1501,Baby Souvenirs,200332157
+,1501,Bedding,100003020
+,1501,Children's Clothing,311
+,1501,Children's Shoes,200000947
+,1501,Diapering & Toilet Training,200328147
+,1501,Feeding,200002038
+,1501,Pregnancy & Maternity,200328149
+,1501,Safety,200002006
+Office & School Supplies,21,,
+,21,"Tape, Adhesives & Fasteners",100003134
+,21,Books,2202
+,21,"Calendars, Bookmark & Cards",200001562
+,21,Correction Supplies,100003125
+,21,Cutting Supplies,100003131
+,21,Desk Accessories & Organizer,211106
+,21,File Folder Accessories,100003177
+,21,Filing Products,211110
+,21,Magazines,2213
+,21,Map,2209
+,21,Notebooks & Writing Pads,100003155
+,21,Office Binding Supplies,100003129
+,21,Painting Supplies,211111
+,21,Paper,2112
+,21,"Pens, Pencils & Writing Supplies",200001743
+,21,Presentation Boards,212002
+,21,School & Educational Supplies,100003135
+,21,Stationery Sticker,200004276
+,21,Drafting Supplies,2139
+,21,Accounting Supplies,200652001
+Phones & Telecommunications,509,,
+,509,Communication Equipment,100001204
+,509,Mobile Phone Accessories & Parts,100001205
+,509,Mobile Phones,5090301
+,509,Walkie Talkie Parts & Accessories,200380144
+,509,Walkie Talkie,50906
+Security & Protection,30,,
+,30,Access Control,3030
+,30,Building Automation,200327231
+,30,Disaster-relief Supplies,200327211
+,30,Emergency Kits,200001791
+,30,Fire Protection,3009
+,30,Intercom,200004310
+,30,IoT Devices,200330186
+,30,Public Broadcasting,200327212
+,30,Roadway Safety,3015
+,30,Safes,200327196
+,30,Security Alarm,200004311
+,30,Security Inspection Device,200328267
+,30,Self Defense Supplies,200328217
+,30,Smart Card System,200004309
+,30,Transmission & Cables,200004343
+,30,UAV System & Robot,200332185
+,30,Video Surveillance,3011
+,30,Workplace Safety Supplies,3007
+Shoes,322,,
+,322,Men's Shoes,200131145
+,322,Mules & Clogs,200001000
+,322,Other Shoes,32299
+,322,Shoe Accessories,32210
+,322,Women's Shoes,200133142
+Special Category,200001075,,
+,200001075,Additional Pay on Your Order,200001079
+,200001075,Beginner for XinXiaoYuan,200004270
+,200001075,Checkout Link,200001078
+,200001075,Coupon,200003560
+,200001075,Custom-made Charge,200165143
+,200001075,Custom-made-Charge,200376142
+,200001075,Down payment/ Purchasing Agent,200001627
+,200001075,Giftcard,200024143
+,200001075,Giveaways,200001621
+,200001075,Mobile Phone Recharge,200003892
+,200001075,Other,200001620
+,200001075,Overseas Warehouse,200003864
+,200001075,Test,200004358
+,200001075,Upcoming Products,200001623
+,200001075,Wallpaper Sample,200726001
+Sports & Entertainment,18,,
+,18,Camping & Hiking,100005529
+,18,Cheerleading,100005880
+,18,Cycling,200003500
+,18,Entertainment,200003538
+,18,Fishing,100005537
+,18,Fitness & Body Building,100005371
+,18,Golf,100005360
+,18,Horse Riding,100005551
+,18,Hunting,100005563
+,18,Musical Instruments,100005481
+,18,Other Sports & Entertainment Product,200004194
+,18,Racquet Sports,200003540
+,18,"Roller,Skateboard",200003541
+,18,Shooting,100005571
+,18,Skiing & Snowboarding,200003543
+,18,Sneakers,200000950
+,18,Sport Bags,200046142
+,18,Sports Bags(hidden),200004217
+,18,Sports Competitions,200297143
+,18,Sportswear & Accessories,301
+,18,Team Sports,200378143
+,18,Water Sports,100005657
+Tools,1420,,
+,1420,Abrasive Tools,4204
+,1420,Abrasives,1428
+,1420,Construction Tools,142016
+,1420,Drill Bit,100006468
+,1420,Garden Tools,12503
+,1420,Hand Tools,142003
+,1420,Lifting Tools,100007498
+,1420,Machine Tools & Accessories,100007188
+,1420,Measurement & Analysis Instruments,1537
+,1420,Other Tools,142099
+,1420,Power Tool Accessories,100007488
+,1420,Power Tools,1417
+,1420,Riveter Guns,200183146
+,1420,Saw Blade,100006471
+,1420,Tool Parts,142001
+,1420,Tool Sets,200003955
+,1420,Tools Packaging,100007485
+,1420,Welding & Soldering Supplies,1427
+,1420,Welding Equipment,1440
+,1420,Woodworking Machinery,1431
+,1420,Woodworking Machinery Parts,4338
+Toys & Hobbies,26,,
+,26,Action & Toy Figures,2621
+,26,"Arts & Crafts, DIY toys",200389156
+,26,Baby & Toddler Toys,100001698
+,26,Building & Construction Toys,200001383
+,26,Classic Toys,100001715
+,26,Diecasts & Toy Vehicles,100001793
+,26,Dolls & Accessories,200001389
+,26,Dolls & Stuffed Toys,200001725
+,26,Electronic Toys,200001388
+,26,High Tech Toys,200386159
+,26,Hobby & Collectibles,200388154
+,26,Kid's Party,200389146
+,26,Learning & Education,100001714
+,26,Model Building,200385142
+,26,Novelty & Gag Toys,200001384
+,26,Outdoor Fun & Sports,100001719
+,26,Pools & Water Fun,200389159
+,26,Pretend Play,100001716
+,26,Games and Puzzles,200001726
+,26,Remote Control Toys,200001385
+,26,Stress Relief Toy,200246142
+,26,Stuffed Animals & Plush,200001387
+Watches,1511,,
+,1511,Children's Watches,200362144
+,1511,Couple Watches,200362143
+,1511,Men's Watches,200362146
+,1511,Pocket & Fob Watches,200000126
+,1511,Watches Accessories,200000121
+,1511,Women's Watches,200362145
+,1511,Wristwatches,100002861
+Weddings & Events,320,,
+,320,Special Occasion Dresses,200000749
+,320,Wedding Accessories,100005787
+,320,Wedding Dresses,32005
+,320,Wedding Party Dress,200000410
+Men's Clothing,200000343,,
+,200000343,Coats & Jackets,200000795
+,200000343,Hoodies & Sweatshirts,200000344
+,200000343,Jeans,200000378
+,200000343,Men's Sets,200003495
+,200000343,Pants,200000380
+,200000343,Shirts,348
+,200000343,Shorts,200005141
+,200000343,Suits & Blazer,200001819
+,200000343,Sweaters,200000386
+,200000343,Swimwears,200001860
+,200000343,Tops & Tees,200000779
+Novelty & Special Use,200000532,,
+,200000532,Exotic Apparel,200000740
+,200000532,Stage & Dance Wear,100005769
+,200000532,Work Wear & Uniforms,200000668
+,200000532,World Apparel,200000666
+,200000532,Costumes & Accessories,200000663
+Apparel Accessories,200000297,,
+,200000297,Arm Warmers,200000392
+,200000297,Belt Buckle,200301150
+,200000297,Belts,200000298
+,200000297,Collar Stays,200346143
+,200000297,Cummerbunds,200000306
+,200000297,Earmuffs,200000393
+,200000297,Eyewear & Accessories,200000440
+,200000297,Gloves & Mittens,200000394
+,200000297,Handkerchiefs,200000400
+,200000297,Hats & Caps,200000402
+,200000297,Headwear,200000395
+,200000297,Knee Sleeve,200295143
+,200000297,Mask,200295142
+,200000297,Pocket Squares,200392144
+,200000297,"Scarf, Hat & Glove Sets",33906
+,200000297,Scarves & Wraps,200000399
+,200000297,Suspenders,3280111
+,200000297,Ties & Detachable Collar,200000305
+Women's Clothing,200000345,,
+,200000345,Blazer & Suits,200001912
+,200000345,Blouses & Shirts,200000346
+,200000345,Coats & Jackets,200000796
+,200000345,Dresses,200000347
+,200000345,Hoodies & Sweatshirts,200000348
+,200000345,Jeans,200000361
+,200000345,"Jumpsuits, Playsuits & Bodysuits",200000362
+,200000345,Leggings,200000865
+,200000345,Pants & Capris,200000366
+,200000345,Shorts,200000367
+,200000345,Skirts,349
+,200000345,Sweaters,200000373
+,200000345,Swimwears,200001918
+,200000345,Tops & Tees,200000778
+,200000345,Women's Sets,200003494
