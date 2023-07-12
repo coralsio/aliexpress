@@ -82,7 +82,7 @@ class ImportsController extends BaseController
     {
         $this->setViewSharedData(['title_singular' => trans('Corals::labels.show_title', ['title' => $import->title])]);
 
-//        $this->setViewSharedData(['edit_url' => $this->resource_url . '/' . $import->hashed_id . '/edit']);
+        //        $this->setViewSharedData(['edit_url' => $this->resource_url . '/' . $import->hashed_id . '/edit']);
 
         return view('Aliexpress::imports.show')->with(compact('import'));
     }

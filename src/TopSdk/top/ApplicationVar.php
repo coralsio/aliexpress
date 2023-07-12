@@ -22,11 +22,11 @@ class ApplicationVar
         $this->application[$var_name] = $var_value;
     }
 
-  public function write()
-  {
-      $this->app_data = @serialize($this->application);
-      $this->__writeToFile();
-  }
+    public function write()
+    {
+        $this->app_data = @serialize($this->application);
+        $this->__writeToFile();
+    }
 
     public function getValue()
     {

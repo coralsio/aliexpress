@@ -296,9 +296,9 @@ class TopClient
             if (null !== $respObject) {
                 $respWellFormed = true;
                 $respObject = current($respObject);
-//                foreach ($respObject as $propKey => $propValue) {
-//                     $respObject = $propValue;
-//                }
+                //                foreach ($respObject as $propKey => $propValue) {
+                //                     $respObject = $propValue;
+                //                }
             }
         } else {
             if ("xml" == $this->format) {
