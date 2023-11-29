@@ -6,7 +6,7 @@
     "description": "Aliexpress Package",
     "namespace": "Corals\\Modules\\Aliexpress\\",
     "provider": "AliexpressServiceProvider",
-    "version": "1.0",
+    "version": "10.0.0",
     "load_order": "0",
     "folder": "Aliexpress",
     "autoload": "psr-4",
